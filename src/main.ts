@@ -1,9 +1,9 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
 import { bootstrapExtra } from '@workadventure/scripting-api-extra';
-import { addItem, getItems, removeItem, setItems } from './item/functions';
-import { Item } from './item/item';
-import itemsJson from './item/items.json';
+import { addItem, getItems, removeItem, setItems } from './items/functions';
+import { Item } from './items/item';
+import itemsJson from './items/items.json';
 
 const items: Array<Item> = itemsJson.items;
 
