@@ -1,0 +1,40 @@
+{
+  "items": [
+    {
+      "id": 1,
+      "name": "Carte cadeau Amazon 50 euros",
+      "description": "Liberté de choix illimitée avec cette carte cadeau Amazon d'une valeur de 50 euros.",
+      "sprite_url": ""
+    },
+    {
+      "id": 2,
+      "name": "Formation HTML",
+      "description": "Maîtrisez les bases du langage HTML et créez des sites web dynamiques avec notre formation complète.",
+      "sprite_url": ""
+    },
+    {
+      "id": 3,
+      "name": "Abonnement Netflix 6 mois",
+      "description": "Liberté de choix illimitée avec cette carte cadeau Amazon d'une valeur de 50 euros.",
+      "sprite_url": ""
+    },
+    {
+      "id": 4,
+      "name": "Coffret Cadeau Spa",
+      "description": "Offrez à vos proches une expérience de détente ultime avec ce coffret cadeau Spa. Laissez-les se relaxer et se ressourcer dans un cadre luxueux avec des massages, des soins du visage et bien plus encore.",
+      "sprite_url": ""
+    },
+    {
+      "id": 5,
+      "name": "Abonnement salle de sport 1 mois",
+      "description": "Commencez votre voyage vers une meilleure forme physique avec cet abonnement salle de sport d'un mois. Profitez d'un accès illimité à des équipements de pointe, des cours de fitness et des conseils d'experts pour atteindre vos objectifs de santé.",
+      "sprite_url": ""
+    },
+    {
+      "id": 6,
+      "name": "Ticket restaurant 10€",
+      "description": "Découvrez une explosion de saveurs avec ce ticket restaurant d'une valeur de 10€. Offrez-vous un délicieux repas dans l'un de vos restaurants préférés et savourez une expérience gastronomique inoubliable.",
+      "sprite_url": ""
+    }
+  ]
+}
