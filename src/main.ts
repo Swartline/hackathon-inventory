@@ -3,8 +3,9 @@
 import { bootstrapExtra } from '@workadventure/scripting-api-extra';
 import { addItem, getItems, removeItem, setItems } from './items/functions';
 import { Item } from './items/item';
-import { addInInventory, initInventory, getInventory, removeInventory } from "./inventories/functions";
 import itemsJson from './items/items.json';
+import { addInInventory, initInventory, getInventory, removeInventory } from "./inventories/functions";
+
 
 const items: Array<Item> = itemsJson.items;
 
