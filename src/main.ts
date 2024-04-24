@@ -1,48 +1,80 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
-import { bootstrapExtra } from '@workadventure/scripting-api-extra';
-import {items} from './items/items.json'
-import { initInventory, getInventory, addInInventory, removeInventory } from './inventories/functions';
+import { bootstrapExtra } from "@workadventure/scripting-api-extra";
+import { UIWebsite } from "@workadventure/iframe-api-typings";
+import {
+  Item,
+  addPlayerItem,
+  initPlayerInventory,
+} from "workadventure-inventory";
+import itemsJson from "./items/items.json";
 import { RemotePlayer } from "@workadventure/iframe-api-typings/play/src/front/Api/Iframe/Players/RemotePlayer";
+
+const items: Item[] = itemsJson.items;
 
 // Waiting for the API to be ready
 WA.onInit()
-  .then(() => {
-    initInventory()
-
-
-    WA.ui.onRemotePlayerClicked.subscribe((remotePlayer: RemotePlayer) => {
-        remotePlayer.addAction('voir invetaire', () => {
-            console.log(remotePlayer.state.inventory);
-        });
-    })
-
+  .then(async () => {
     bootstrapExtra().catch((e) => console.error(e));
-    
-    if (getInventory().length === 0) {
-      items.forEach(item => {
-        addInInventory(item)
-        console.log('add')
-      });
-      removeInventory(2)
-      removeInventory(4)
-      removeInventory(6)
+    await initPlayerInventory();
+    for (const item of items) {
+      await addPlayerItem(item);
     }
-
-    // console.log(WA.player.name, getInventory());
-
+    WA.ui.onRemotePlayerClicked.subscribe((remotePlayer: RemotePlayer) => {
+      remotePlayer.addAction('voir invetaire', () => {
+        console.log(remotePlayer.state.inventory);
+      });
+    })
     async function logInventories() {
       await WA.players.configureTracking();
       const players = WA.players.list();
       for (const player of players) {
-          console.log(player.name, ' ', player);
+        console.log(player.name, ' ', player);
       }
       console.log(WA.player.name, ' ', WA.player.state.inventory);
 
     }
 
     WA.player.onPlayerMove(logInventories);
-    
 
+
+    let inventoryIframe: UIWebsite | undefined;
+
+    WA.ui.actionBar.addButton({
+      id: "inventory-btn",
+      type: "action",
+      imageSrc: "https://cdn-icons-png.flaticon.com/512/4138/4138061.png",
+      toolTip: "Inventaire",
+      callback: async (event) => {
+        console.log("Button clicked", event);
+        if (!inventoryIframe) {
+          inventoryIframe = await WA.ui.website.open({
+            url: "../test.html",
+            position: {
+              vertical: "middle",
+              horizontal: "middle",
+            },
+            size: {
+              height: "50vh",
+              width: "50vw",
+            },
+            allowApi: true,
+          });
+          inventoryIframe.position.vertical = "top";
+
+          WA.player.state.inventory_open = true;
+        } else {
+          inventoryIframe.close();
+          inventoryIframe = undefined;
+          WA.player.state.inventory_open = false;
+        }
+      },
+    });
+
+    WA.player.state.onVariableChange("inventory_open").subscribe((value) => {
+      if (!value) {
+        inventoryIframe = undefined;
+      }
+    });
   })
   .catch((e) => console.error(e));
