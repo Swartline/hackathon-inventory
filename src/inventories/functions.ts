@@ -1,4 +1,4 @@
-import { Item } from '../item/item';
+import { Item } from '../items/item';
 
 export const getInventory = (): Array<Item> => {
     const inventory: Array<Item> = WA.player.state.loadVariable("inventory") as Array<Item>
