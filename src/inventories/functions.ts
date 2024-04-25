@@ -1,11 +1,6 @@
 import { Item } from 'workadventure-inventory';
 
-export const getInventory = (): Array<Item> => {
-  const inventory: Array<Item> = WA.player.state.loadVariable(
-    'inventory',
-  ) as Array<Item>;
-
-  function compareByName(a: Item, b: Item) {
+function compareByName(a: Item, b: Item) {
     const nameA = a.name.toUpperCase();
     const nameB = b.name.toUpperCase();
 
@@ -16,16 +11,41 @@ export const getInventory = (): Array<Item> => {
       return 1;
     }
     return 0;
-  }
+}
 
-  inventory.sort(compareByName);
+export const getInventory = (): Array<Item> => {
+  const inventory: Array<Item> = WA.player.state.loadVariable(
+    'inventory',
+  ) as Array<Item>;
+
+  if(inventory !== undefined) {
+    inventory.sort(compareByName);
+  }
 
   return inventory;
 };
 
+export const getOthersInventory = async (player_uuid: string) => {
+  let inventory: Array<Item> = []
+  await WA.players.configureTracking();
+  const players = WA.players.list();
+
+  for (const player of players) {
+    if (player.uuid === player_uuid) {
+      inventory =  player.state.inventory as Array<Item>;
+      console.log(player.name, ' ', player.state.inventory);
+    }
+  }
+  
+  return inventory.sort(compareByName)
+};
+
 export const initInventory = () => {
   if (getInventory() === undefined) {
-    WA.player.state.saveVariable('inventory', []);
+    WA.player.state.saveVariable('inventory', [], {
+      public: true,
+      persist: true
+    });
   }
 };
 
