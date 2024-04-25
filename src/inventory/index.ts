@@ -4,31 +4,29 @@ import itemsJson from './items.json';
 
 export { type Item };
 
-const INVENTORY_VARIABLE_NAME: string = 'inventory';
+const INVENTORY: string = 'inventory';
 const items: Item[] = itemsJson.items;
 
 export const getPlayerInventory = async (): Promise<Item[]> => {
-  const inventory = (await WA.player.state.loadVariable(
-    INVENTORY_VARIABLE_NAME,
-  )) as Item[];
+  const inventory = (await WA.player.state.loadVariable(INVENTORY)) as Item[];
   return inventory;
 };
 
 export const initPlayerInventory = async (): Promise<void> => {
   const inventory = await getPlayerInventory();
   if (inventory === undefined) {
-    await WA.player.state.saveVariable(INVENTORY_VARIABLE_NAME, []);
+    await WA.player.state.saveVariable(INVENTORY, []);
   }
 };
 
 export const clearPlayerInventory = async (): Promise<void> => {
-  await WA.player.state.saveVariable(INVENTORY_VARIABLE_NAME, []);
+  await WA.player.state.saveVariable(INVENTORY, []);
 };
 
 export const addPlayerItem = async (item: Item): Promise<Item[]> => {
   const inventory = await getPlayerInventory();
   inventory.push(item);
-  await WA.player.state.saveVariable(INVENTORY_VARIABLE_NAME, inventory);
+  await WA.player.state.saveVariable(INVENTORY, inventory);
   return inventory;
 };
 
@@ -41,7 +39,7 @@ export const removePlayerItem = async (item: Item): Promise<Item[]> => {
     }
   });
 
-  await WA.player.state.saveVariable(INVENTORY_VARIABLE_NAME, inventory);
+  await WA.player.state.saveVariable(INVENTORY, inventory);
 
   return inventory;
 };
