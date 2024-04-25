@@ -30,7 +30,7 @@ const items: Item[] = itemsJson.items;
     type: "action",
     imageSrc: "https://cdn-icons-png.flaticon.com/512/4138/4138061.png",
     toolTip: "Inventaire",
-    callback: async (event) => {
+    callback: async () => {
       if (!inventoryIframe) {
         inventoryIframe = await WA.ui.website.open({
           url: "../test.html",
