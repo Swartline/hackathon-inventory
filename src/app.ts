@@ -1,13 +1,13 @@
-import { UIWebsite } from "@workadventure/iframe-api-typings";
-import { Item, getPlayerInventory } from "workadventure-inventory";
+import { UIWebsite } from '@workadventure/iframe-api-typings';
+import { Item, getPlayerInventory } from './inventory';
 
 (async () => {
   await WA.onInit();
-  document.getElementById("closeModal")?.addEventListener("click", () => {
+  document.getElementById('closeModal')?.addEventListener('click', () => {
     close();
   });
 
-  const inventory = document.getElementById("inventory");
+  const inventory = document.getElementById('inventory');
 
   const items = await getPlayerInventory();
 

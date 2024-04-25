@@ -1,13 +1,13 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
-import { UIWebsite } from "@workadventure/iframe-api-typings";
+import { UIWebsite } from '@workadventure/iframe-api-typings';
 import {
   Item,
   addPlayerItem,
   clearPlayerInventory,
   initPlayerInventory,
-} from "workadventure-inventory";
-import itemsJson from "./items/items.json";
+} from './inventory';
+import itemsJson from './inventory/items.json';
 
 const items: Item[] = itemsJson.items;
 
@@ -25,25 +25,25 @@ const items: Item[] = itemsJson.items;
   let inventoryIframe: UIWebsite | undefined;
 
   WA.ui.actionBar.addButton({
-    id: "inventory-btn",
-    type: "action",
-    imageSrc: "https://cdn-icons-png.flaticon.com/512/4138/4138061.png",
-    toolTip: "Inventaire",
+    id: 'inventory-btn',
+    type: 'action',
+    imageSrc: 'https://cdn-icons-png.flaticon.com/512/4138/4138061.png',
+    toolTip: 'Inventaire',
     callback: async () => {
       if (!inventoryIframe) {
         inventoryIframe = await WA.ui.website.open({
-          url: "/src/test.html",
+          url: '/src/test.html',
           position: {
-            vertical: "middle",
-            horizontal: "middle",
+            vertical: 'middle',
+            horizontal: 'middle',
           },
           size: {
-            height: "50vh",
-            width: "50vw",
+            height: '50vh',
+            width: '50vw',
           },
           allowApi: true,
         });
-        inventoryIframe.position.vertical = "top";
+        inventoryIframe.position.vertical = 'top';
 
         WA.player.state.inventory_open = true;
         WA.player.state.inventory_id = inventoryIframe.id;
@@ -55,7 +55,7 @@ const items: Item[] = itemsJson.items;
     },
   });
 
-  WA.player.state.onVariableChange("inventory_open").subscribe((value) => {
+  WA.player.state.onVariableChange('inventory_open').subscribe((value) => {
     if (!value) {
       inventoryIframe = undefined;
     }
