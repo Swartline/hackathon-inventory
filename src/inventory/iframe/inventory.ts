@@ -1,5 +1,5 @@
 import { UIWebsite } from '@workadventure/iframe-api-typings';
-import { Item, getPlayerInventory } from './inventory';
+import { Item, getPlayerInventory } from '..';
 
 (async () => {
   await WA.onInit();
