@@ -2,7 +2,7 @@
 
 import { bootstrapExtra } from '@workadventure/scripting-api-extra';
 import {items} from './items/items.json'
-import { initInventory, getInventory, addInInventory, removeInventory, getOthersInventory } from './inventories/functions';
+import { initInventory, getInventory, addInInventory, removeInventory } from './inventories/functions';
 import { RemotePlayer } from "@workadventure/iframe-api-typings/play/src/front/Api/Iframe/Players/RemotePlayer";
 
 // Waiting for the API to be ready
