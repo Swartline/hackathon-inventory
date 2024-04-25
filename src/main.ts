@@ -8,6 +8,7 @@ import {
   initPlayerInventory,
 } from './inventory';
 import itemsJson from './inventory/items.json';
+import { RemotePlayer } from "@workadventure/iframe-api-typings/play/src/front/Api/Iframe/Players/RemotePlayer";
 
 const items: Item[] = itemsJson.items;
 
@@ -21,6 +22,24 @@ const items: Item[] = itemsJson.items;
   for (const item of items) {
     await addPlayerItem(item);
   }
+
+  WA.ui.onRemotePlayerClicked.subscribe((remotePlayer: RemotePlayer) => {
+    remotePlayer.addAction('voir invetaire', () => {
+      console.log(remotePlayer.state.inventory);
+    });
+  })
+
+  async function logInventories() {
+    await WA.players.configureTracking();
+    const players = WA.players.list();
+    for (const player of players) {
+      console.log(player.name, ' ', player);
+    }
+    console.log(WA.player.name, ' ', WA.player.state.inventory);
+
+  }
+
+  WA.player.onPlayerMove(logInventories);
 
   let inventoryIframe: UIWebsite | undefined;
 
