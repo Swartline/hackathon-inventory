@@ -1,10 +1,12 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
+import { initializeExchangeSystem } from './exchange';
 import { initializeInventorySystem } from './inventory';
 
 const main = async (): Promise<void> => {
   await WA.onInit();
   await initializeInventorySystem();
+  await initializeExchangeSystem();
 
   WA.ui.onRemotePlayerClicked.subscribe((remotePlayer) => {
     remotePlayer.addAction('Voir inventaire', () => {
