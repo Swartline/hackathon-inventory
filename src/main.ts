@@ -1,6 +1,5 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
-import { bootstrapExtra } from "@workadventure/scripting-api-extra";
 import { UIWebsite } from "@workadventure/iframe-api-typings";
 import {
   Item,
@@ -15,7 +14,7 @@ const items: Item[] = itemsJson.items;
 // Waiting for the API to be ready
 (async () => {
   await WA.onInit();
-  bootstrapExtra().catch((e) => console.error(e));
+
   await initPlayerInventory();
 
   await clearPlayerInventory();
