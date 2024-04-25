@@ -6,6 +6,10 @@ body {
   background-color: #262c44;
   border: 1px solid;
   border-radius: 7px;
+  font-family: Roboto, ui-sans-serif, system-ui, -apple-system,
+    BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans,
+    sans-serif, "Apple Color Emoji", "Segoe UI Emoji", Segoe UI Symbol,
+    "Noto Color Emoji";
 }
 
 #closeModal {
