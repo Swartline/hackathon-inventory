@@ -1,68 +1,49 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
-import { bootstrapExtra } from "@workadventure/scripting-api-extra";
-import { UIWebsite } from "@workadventure/iframe-api-typings";
+import { UIWebsite } from '@workadventure/iframe-api-typings';
 import {
   Item,
   addPlayerItem,
   clearPlayerInventory,
   initPlayerInventory,
-} from "workadventure-inventory";
-import itemsJson from "./items/items.json";
-import { RemotePlayer } from "@workadventure/iframe-api-typings/play/src/front/Api/Iframe/Players/RemotePlayer";
+} from './inventory';
+import itemsJson from './inventory/items.json';
 
 const items: Item[] = itemsJson.items;
 
 // Waiting for the API to be ready
-WA.onInit()
-  .then(async () => {
-    bootstrapExtra().catch((e) => console.error(e));
-    await initPlayerInventory();
-    for (const item of items) {
-      await addPlayerItem(item);
-    }
-    WA.ui.onRemotePlayerClicked.subscribe((remotePlayer: RemotePlayer) => {
-      remotePlayer.addAction('voir invetaire', () => {
-        console.log(remotePlayer.state.inventory);
-      });
-    })
-    async function logInventories() {
-      await WA.players.configureTracking();
-      const players = WA.players.list();
-      for (const player of players) {
-        console.log(player.name, ' ', player);
-      }
-      console.log(WA.player.name, ' ', WA.player.state.inventory);
+(async () => {
+  await WA.onInit();
 
-    }
+  await initPlayerInventory();
 
-    WA.player.onPlayerMove(logInventories);
-
-
-    let inventoryIframe: UIWebsite | undefined;
+  await clearPlayerInventory();
+  for (const item of items) {
+    await addPlayerItem(item);
+  }
 
   let inventoryIframe: UIWebsite | undefined;
 
   WA.ui.actionBar.addButton({
-    id: "inventory-btn",
-    type: "action",
-    imageSrc: "https://cdn-icons-png.flaticon.com/512/4138/4138061.png",
-    toolTip: "Inventaire",
+    id: 'inventory-btn',
+    type: 'action',
+    imageSrc: 'https://cdn-icons-png.flaticon.com/512/4138/4138061.png',
+    toolTip: 'Inventaire',
     callback: async () => {
       if (!inventoryIframe) {
         inventoryIframe = await WA.ui.website.open({
-          url: "../test.html",
+          url: '/src/test.html',
           position: {
-            vertical: "middle",
-            horizontal: "middle",
+            vertical: 'middle',
+            horizontal: 'middle',
           },
           size: {
-            height: "50vh",
-            width: "50vw",
+            height: '50vh',
+            width: '50vw',
           },
           allowApi: true,
         });
-        inventoryIframe.position.vertical = "top";
+        inventoryIframe.position.vertical = 'top';
 
         WA.player.state.inventory_open = true;
         WA.player.state.inventory_id = inventoryIframe.id;
@@ -74,7 +55,7 @@ WA.onInit()
     },
   });
 
-  WA.player.state.onVariableChange("inventory_open").subscribe((value) => {
+  WA.player.state.onVariableChange('inventory_open').subscribe((value) => {
     if (!value) {
       inventoryIframe = undefined;
     }
