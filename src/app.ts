@@ -23,7 +23,10 @@ WA.onInit()
       }
     }
 
-    for (let i = 0; i < 30; i++) {
+    //Creation of the cards in the inventory
+    let nbCard = 30;
+    items.length > 30 ? (nbCard = Math.ceil(items.length / 10) * 10) : null;
+    for (let i = 0; i < nbCard; i++) {
       if (items[i] !== undefined) {
         addCard(items[i]);
       } else {
@@ -32,16 +35,14 @@ WA.onInit()
     }
 
     async function close() {
-      WA.ui.website.getAll().then((websites) => {
-        WA.ui.website
-          .getById(websites[0].id)
-          .then((website: UIWebsite | undefined) => {
-            if (website) {
-              WA.player.state.inventory_open = false;
-              website.close();
-            }
-          });
-      });
+      WA.ui.website
+        .getById(String(WA.player.state.inventory_id))
+        .then((website: UIWebsite | undefined) => {
+          if (website) {
+            WA.player.state.inventory_open = false;
+            website.close();
+          }
+        });
     }
   })
   .catch((e) => console.error(e));
