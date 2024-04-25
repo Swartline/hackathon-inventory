@@ -33,7 +33,7 @@ const items: Item[] = itemsJson.items;
     callback: async () => {
       if (!inventoryIframe) {
         inventoryIframe = await WA.ui.website.open({
-          url: "../test.html",
+          url: "/src/test.html",
           position: {
             vertical: "middle",
             horizontal: "middle",
