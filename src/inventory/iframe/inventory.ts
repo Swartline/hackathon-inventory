@@ -101,4 +101,32 @@ import { Item, getPlayerInventory } from "..";
       }
     }
   };
+
+  //Event on click on the button id = "tradeItem"
+  document.getElementById("tradeItem")?.addEventListener("click", async () => {
+    console.log("Trade item");
+    const website = await WA.ui.website.getById(
+      String(WA.player.state.inventory_id)
+    ); //TODO method to get the website by id
+
+    if (website) {
+      console.log("Trade item", website);
+      website.position.horizontal = "left";
+      const iframeExchange = await WA.ui.website.open({
+        url: "/src/exchange/inventory/exchange.html",
+        position: {
+          vertical: "middle",
+          horizontal: "right",
+        },
+        size: {
+          height: "50vh",
+          width: "50vw",
+        },
+        allowApi: true,
+      });
+      WA.player.state.exchange_id = iframeExchange.id;
+    }
+    // });
+    //TODO
+  });
 })();

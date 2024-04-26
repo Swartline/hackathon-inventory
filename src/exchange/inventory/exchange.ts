@@ -24,8 +24,8 @@ import { Item, getPlayerInventory } from "../../inventory";
   }
 
   //Creation of the cards in the inventory
-  let nbCard = 30;
-  items.length > 30 ? (nbCard = Math.ceil(items.length / 10) * 10) : null;
+  let nbCard = 15;
+  items.length > 15 ? (nbCard = Math.ceil(items.length / 10) * 10) : null;
   for (let i = 0; i < nbCard; i++) {
     if (items[i] !== undefined) {
       addCard(items[i]);
@@ -36,7 +36,7 @@ import { Item, getPlayerInventory } from "../../inventory";
 
   async function close() {
     WA.ui.website
-      .getById(String(WA.player.state.inventory_id))
+      .getById(String(WA.player.state.exchange_id))
       .then((website: UIWebsite | undefined) => {
         if (website) {
           WA.player.state.inventory_open = false;
