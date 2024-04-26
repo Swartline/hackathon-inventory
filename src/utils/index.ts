@@ -1,5 +1,6 @@
 import { UIWebsite } from "@workadventure/iframe-api-typings";
 import { Item } from "../inventory";
+import { RemotePlayerInterface } from "@workadventure/iframe-api-typings/play/src/front/Api/Iframe/Players/RemotePlayer";
 
 // Utilitary functions to handle adding and removing items in lists
 export const getPlayerList = async (
@@ -55,3 +56,17 @@ export async function getIframeById(
 ): Promise<UIWebsite | undefined> {
   return WA.ui.website.getById(id);
 }
+
+export const getRemotePlayerByUuid = async (
+  uuid: string
+): Promise<RemotePlayerInterface | null> => {
+  await WA.players.configureTracking();
+  const allPlayers = WA.players.list();
+
+  for (const player of allPlayers) {
+    if (player.uuid === uuid) {
+      return player;
+    }
+  }
+  return null;
+};
