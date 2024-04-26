@@ -12,7 +12,7 @@ const getCellHTML = (item?: Item): string => {
 };
 
 const refreshCells = (inventory: HTMLElement, items: Item[] = []) => {
-  const MIN_NB_CELLS = 20;
+  const MIN_NB_CELLS = 9;
   const displayedNbCells = Math.max(
     Math.ceil(items.length / 10) * 10,
     MIN_NB_CELLS,
@@ -38,9 +38,11 @@ const refreshCells = (inventory: HTMLElement, items: Item[] = []) => {
   });
 
   const exchangeHTML = document.getElementById('exchange-cells');
+  const remoteExchangeHTML = document.getElementById('remote-exchange-cells');
   // Display initial empty cells
-  if (exchangeHTML) {
+  if (exchangeHTML && remoteExchangeHTML) {
     refreshCells(exchangeHTML);
+    refreshCells(remoteExchangeHTML);
   }
 
   // Creation of the cells in the inventory

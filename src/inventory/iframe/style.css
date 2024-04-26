@@ -37,7 +37,8 @@ h1 {
 }
 
 #inventory,
-#exchange-cells {
+#exchange-cells,
+#remote-exchange-cells {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;

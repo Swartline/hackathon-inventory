@@ -1,4 +1,6 @@
 .buttons-container {
+  display: flex;
+  gap: 24px;
   padding: 10px;
 }
 
@@ -26,4 +28,14 @@
 #btn-valid:hover,
 #btn-cancel:hover {
   opacity: 1;
+}
+
+.main {
+  display: flex;
+  justify-content: space-around;
+}
+
+.divider {
+  width: 10px;
+  height: 100%;
 }
