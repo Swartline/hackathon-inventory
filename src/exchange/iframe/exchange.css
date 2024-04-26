@@ -4,7 +4,6 @@
 
 #btn-valid,
 #btn-cancel {
-  background-color: #4caf50;
   color: white;
   padding: 4px 16px;
   font-size: 16px;
@@ -14,6 +13,14 @@
   width: 100%;
   flex: 1;
   opacity: 0.9;
+}
+
+#btn-valid {
+  background-color: #4caf50;
+}
+
+#btn-cancel {
+  background-color: gray;
 }
 
 #btn-valid:hover,
