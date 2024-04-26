@@ -42,6 +42,13 @@ export const removeItemFromPlayerList = async (
   return list;
 };
 
+//function to get item by id
+export async function getItemById(id: string): Promise<Item | undefined> {
+  return (await getPlayerList("inventory")).find(
+    (item) => item.id === Number(id)
+  );
+}
+
 //function to get a iframe by id
 export async function getIframeById(
   id: string

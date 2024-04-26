@@ -1,8 +1,10 @@
-import { Item } from "../inventory";
+import { UIWebsite } from "@workadventure/iframe-api-typings";
+import { Item, openInventoryLeft } from "../inventory";
 import { addItemToPlayerList, removeItemFromPlayerList } from "../utils";
+import { RemotePlayer } from "@workadventure/iframe-api-typings/play/src/front/Api/Iframe/Players/RemotePlayer";
 
-const EXCHANGE_PARTNER_UUID = "exchange_partner_uuid";
-const EXCHANGE_LIST = "exchange_list";
+export const EXCHANGE_PARTNER_UUID = "exchange_partner_uuid";
+export const EXCHANGE_LIST = "exchange_list";
 
 const addExchangeButton = (): void => {
   WA.ui.onRemotePlayerClicked.subscribe((remotePlayer) => {
@@ -29,6 +31,23 @@ export const removeExchangeItem = async (item: Item): Promise<Item[]> => {
   return newExchangeList;
 };
 
+export const openExchange = async (): Promise<UIWebsite> => {
+  const iframeExchange = await WA.ui.website.open({
+    url: "./src/exchange/iframe/exchange.html",
+    position: {
+      vertical: "middle",
+      horizontal: "right",
+    },
+    size: {
+      height: "50vh",
+      width: "50vw",
+    },
+    allowApi: true,
+  });
+  WA.player.state.exchange_id = iframeExchange.id;
+  return iframeExchange;
+};
+
 export const initializeExchangeSystem = async (): Promise<void> => {
   await WA.players.configureTracking({
     players: true,
@@ -52,6 +71,8 @@ export const initializeExchangeSystem = async (): Promise<void> => {
 
         // TODO: display exchange iframe
         console.log(`Displaying exchange iframe for player ${WA.player.uuid}`);
+        await openInventoryLeft();
+        await openExchange();
       }
     });
 

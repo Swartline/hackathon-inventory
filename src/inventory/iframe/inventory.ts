@@ -1,5 +1,6 @@
 import { Item, getPlayerInventory } from "..";
-import { getIframeById } from "../../utils";
+import { addExchangeItem, openExchange } from "../../exchange";
+import { getIframeById, getItemById } from "../../utils";
 
 (async () => {
   await WA.onInit();
@@ -68,6 +69,10 @@ import { getIframeById } from "../../utils";
       document.getElementById("itemModalTitle")!.innerHTML = item.name;
       document.getElementById("itemModalDescription")!.innerHTML =
         item.description;
+      document
+        .getElementById("tradeItem")!
+        .setAttribute("data-item", String(item.id));
+      //add data to the trade button
       //TODO
     }
   }
@@ -99,28 +104,21 @@ import { getIframeById } from "../../utils";
     }
   };
 
-  document.getElementById("tradeItem")?.addEventListener("click", async () => {
-    console.log("Trade item");
+  document.getElementById("tradeItem")?.addEventListener("click", async (e) => {
+    console.log("Trade item4567", e.target);
+    const itemId = (<HTMLElement>e.target).getAttribute("data-item");
+    let item = await getItemById(itemId!);
     const inventoryIframe = await getIframeById(
       String(WA.player.state.inventory_id)
     ); //Receive the iframe of the inventory to reposition it
 
     if (inventoryIframe) {
       console.log("Trade item", inventoryIframe);
-      inventoryIframe.position.horizontal = "left";
-      const iframeExchange = await WA.ui.website.open({
-        url: "./src/exchange/iframe/exchange.html",
-        position: {
-          vertical: "middle",
-          horizontal: "right",
-        },
-        size: {
-          height: "50vh",
-          width: "50vw",
-        },
-        allowApi: true,
-      });
-      WA.player.state.exchange_id = iframeExchange.id;
+      // inventoryIframe.position.horizontal = "left";
+      // const iframeExchange = await openExchange();
+      if (item) {
+        await addExchangeItem(item);
+      }
     }
     // });
     //TODO

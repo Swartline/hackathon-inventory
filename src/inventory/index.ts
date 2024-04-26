@@ -6,6 +6,7 @@ import {
   getPlayerList,
   removeItemFromPlayerList,
 } from "../utils";
+import { EXCHANGE_LIST } from "../exchange";
 
 export { type Item };
 
@@ -33,6 +34,16 @@ export const getPlayerInventory = async (): Promise<Item[]> => {
   return inventory.sort(compareByName);
 };
 
+export const getPlayerExchange = async (): Promise<Item[]> => {
+  const inventory = await getPlayerList(EXCHANGE_LIST);
+  console.log("init item exchange", inventory);
+
+  if (!inventory) {
+    return [];
+  }
+  return inventory.sort(compareByName);
+};
+
 export const clearPlayerInventory = async (): Promise<void> => {
   await WA.player.state.saveVariable(INVENTORY, []);
 };
@@ -53,6 +64,26 @@ export const openInventory = async (): Promise<UIWebsite> => {
     position: {
       vertical: "middle",
       horizontal: "middle",
+    },
+    size: {
+      height: "50vh",
+      width: "50vw",
+    },
+    allowApi: true,
+  });
+
+  WA.player.state.inventory_open = true;
+  WA.player.state.inventory_id = inventoryIframe.id;
+
+  return inventoryIframe;
+};
+
+export const openInventoryLeft = async (): Promise<UIWebsite> => {
+  const inventoryIframe = await WA.ui.website.open({
+    url: "./src/inventory/iframe/inventory.html",
+    position: {
+      vertical: "middle",
+      horizontal: "left",
     },
     size: {
       height: "50vh",

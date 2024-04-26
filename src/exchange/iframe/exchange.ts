@@ -1,5 +1,6 @@
-import { UIWebsite } from "@workadventure/iframe-api-typings";
-import { Item, getPlayerInventory } from "../../inventory";
+import { EXCHANGE_LIST } from "..";
+import { Item, getPlayerExchange } from "../../inventory";
+import { getIframeById } from "../../utils";
 
 (async () => {
   await WA.onInit();
@@ -9,7 +10,7 @@ import { Item, getPlayerInventory } from "../../inventory";
 
   const inventory = document.getElementById("inventory");
 
-  const items = await getPlayerInventory();
+  const items = await getPlayerExchange();
 
   function addCard(item?: Item): void {
     if (inventory != null) {
@@ -35,13 +36,18 @@ import { Item, getPlayerInventory } from "../../inventory";
   }
 
   async function close() {
-    WA.ui.website
-      .getById(String(WA.player.state.exchange_id))
-      .then((exchangeIframe: UIWebsite | undefined) => {
-        if (exchangeIframe) {
-          // WA.player.state.inventory_open = false;
-          exchangeIframe.close();
-        }
-      });
+    const exchangeIframe = await getIframeById(
+      String(WA.player.state.exchange_id)
+    );
+    if (exchangeIframe) {
+      // WA.player.state.inventory_open = false;
+      exchangeIframe.close();
+    }
   }
+
+  // WA.player.state.onVariableChange(EXCHANGE_LIST).subscribe((value) => {
+  //   if (!value) {
+  //     inventoryIframe = undefined;
+  //   }
+  // });
 })();
