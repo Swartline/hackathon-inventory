@@ -1,13 +1,13 @@
-import { UIWebsite } from '@workadventure/iframe-api-typings';
-import { Item, getPlayerInventory } from '..';
+import { Item, getPlayerInventory } from "..";
+import { getIframeById } from "../../utils";
 
 (async () => {
   await WA.onInit();
-  document.getElementById('closeModal')?.addEventListener('click', () => {
+  document.getElementById("closeModal")?.addEventListener("click", () => {
     close();
   });
 
-  const inventory = document.getElementById('inventory');
+  const inventory = document.getElementById("inventory");
 
   const items = await getPlayerInventory();
 
@@ -41,45 +41,42 @@ import { Item, getPlayerInventory } from '..';
   }
 
   async function close() {
-    WA.ui.website
-      .getById(String(WA.player.state.inventory_id))
-      .then((website: UIWebsite | undefined) => {
-        if (website) {
-          WA.player.state.inventory_open = false;
-          website.close();
-        }
-      });
+    const website = await getIframeById(String(WA.player.state.inventory_id));
+    if (website) {
+      WA.player.state.inventory_open = false;
+      website.close();
+    }
   }
 
   // Add event listener to each item
-  const cards = document.getElementsByClassName('card-filled');
+  const cards = document.getElementsByClassName("card-filled");
   for (let i = 0; i < cards.length; i++) {
-    cards[i].addEventListener('click', () => {
-      console.log('Item clicked', cards[i]);
+    cards[i].addEventListener("click", () => {
+      console.log("Item clicked", cards[i]);
       if (items[i] !== undefined) {
         openItemModal(items[i]);
       }
     });
   }
 
-  const modal = document.getElementById('itemModal');
+  const modal = document.getElementById("itemModal");
 
   function openItemModal(item: Item) {
-    console.log('Open item modal', item);
+    console.log("Open item modal", item);
     if (modal) {
-      modal.style.display = 'block';
-      document.getElementById('itemModalTitle')!.innerHTML = item.name;
-      document.getElementById('itemModalDescription')!.innerHTML =
+      modal.style.display = "block";
+      document.getElementById("itemModalTitle")!.innerHTML = item.name;
+      document.getElementById("itemModalDescription")!.innerHTML =
         item.description;
       //TODO
     }
   }
 
   document
-    .getElementById('closeInteractModal')
-    ?.addEventListener('click', () => {
-      if (modal?.style.display === 'block') {
-        modal.style.display = 'none';
+    .getElementById("closeInteractModal")
+    ?.addEventListener("click", () => {
+      if (modal?.style.display === "block") {
+        modal.style.display = "none";
       }
     });
 
@@ -95,32 +92,31 @@ import { Item, getPlayerInventory } from '..';
 
   // Close the modal if the user presses the escape key
   window.onkeydown = function (event) {
-    if (event.key === 'Escape') {
+    if (event.key === "Escape") {
       if (modal) {
-        modal.style.display = 'none';
+        modal.style.display = "none";
       }
     }
   };
 
-  //Event on click on the button id = "tradeItem"
-  document.getElementById('tradeItem')?.addEventListener('click', async () => {
-    console.log('Trade item');
-    const website = await WA.ui.website.getById(
-      String(WA.player.state.inventory_id),
-    ); //TODO method to get the website by id
+  document.getElementById("tradeItem")?.addEventListener("click", async () => {
+    console.log("Trade item");
+    const inventoryIframe = await getIframeById(
+      String(WA.player.state.inventory_id)
+    ); //Receive the iframe of the inventory to reposition it
 
-    if (website) {
-      console.log('Trade item', website);
-      website.position.horizontal = 'left';
+    if (inventoryIframe) {
+      console.log("Trade item", inventoryIframe);
+      inventoryIframe.position.horizontal = "left";
       const iframeExchange = await WA.ui.website.open({
-        url: './src/exchange/iframe/exchange.html',
+        url: "./src/exchange/iframe/exchange.html",
         position: {
-          vertical: 'middle',
-          horizontal: 'right',
+          vertical: "middle",
+          horizontal: "right",
         },
         size: {
-          height: '50vh',
-          width: '50vw',
+          height: "50vh",
+          width: "50vw",
         },
         allowApi: true,
       });

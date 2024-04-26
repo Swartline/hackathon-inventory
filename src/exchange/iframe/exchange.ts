@@ -37,10 +37,10 @@ import { Item, getPlayerInventory } from "../../inventory";
   async function close() {
     WA.ui.website
       .getById(String(WA.player.state.exchange_id))
-      .then((website: UIWebsite | undefined) => {
-        if (website) {
-          WA.player.state.inventory_open = false;
-          website.close();
+      .then((exchangeIframe: UIWebsite | undefined) => {
+        if (exchangeIframe) {
+          // WA.player.state.inventory_open = false;
+          exchangeIframe.close();
         }
       });
   }

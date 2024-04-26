@@ -1,22 +1,23 @@
-import { Item } from '../inventory';
+import { UIWebsite } from "@workadventure/iframe-api-typings";
+import { Item } from "../inventory";
 
 // Utilitary functions to handle adding and removing items in lists
 export const getPlayerList = async (
-  listVariableName: string,
+  listVariableName: string
 ): Promise<Item[]> => {
   const list = (await WA.player.state.loadVariable(listVariableName)) as Item[];
   return list ?? [];
 };
 
 export const clearPlayerList = async (
-  listVariableName: string,
+  listVariableName: string
 ): Promise<void> => {
   await WA.player.state.saveVariable(listVariableName, []);
 };
 
 export const addItemToPlayerList = async (
   item: Item,
-  listVariableName: string,
+  listVariableName: string
 ): Promise<Item[]> => {
   const list = await getPlayerList(listVariableName);
   list.push(item);
@@ -26,7 +27,7 @@ export const addItemToPlayerList = async (
 
 export const removeItemFromPlayerList = async (
   item: Item,
-  listVariableName: string,
+  listVariableName: string
 ): Promise<Item[]> => {
   const list = await getPlayerList(listVariableName);
 
@@ -40,3 +41,10 @@ export const removeItemFromPlayerList = async (
 
   return list;
 };
+
+//function to get a iframe by id
+export async function getIframeById(
+  id: string
+): Promise<UIWebsite | undefined> {
+  return WA.ui.website.getById(id);
+}

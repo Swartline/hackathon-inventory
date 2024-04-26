@@ -1,19 +1,19 @@
-import { Item } from '../inventory';
-import { addItemToPlayerList, removeItemFromPlayerList } from '../utils';
+import { Item } from "../inventory";
+import { addItemToPlayerList, removeItemFromPlayerList } from "../utils";
 
-const EXCHANGE_PARTNER_UUID = 'exchange_partner_uuid';
-const EXCHANGE_LIST = 'exchange_list';
+const EXCHANGE_PARTNER_UUID = "exchange_partner_uuid";
+const EXCHANGE_LIST = "exchange_list";
 
 const addExchangeButton = (): void => {
   WA.ui.onRemotePlayerClicked.subscribe((remotePlayer) => {
-    remotePlayer.addAction('Échanger', async () => {
+    remotePlayer.addAction("Échanger", async () => {
       await WA.player.state.saveVariable(
         EXCHANGE_PARTNER_UUID,
         remotePlayer.uuid,
         {
           public: true,
           persist: false,
-        },
+        }
       );
     });
   });
@@ -47,7 +47,7 @@ export const initializeExchangeSystem = async (): Promise<void> => {
           {
             public: true,
             persist: false,
-          },
+          }
         );
 
         // TODO: display exchange iframe
