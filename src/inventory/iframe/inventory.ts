@@ -1,14 +1,14 @@
-import { Item, getPlayerInventory } from "..";
-import { addExchangeItem, openExchange } from "../../exchange";
-import { getIframeById, getItemById } from "../../utils";
+import { Item, getPlayerInventory } from '..';
+import { addExchangeItem } from '../../exchange';
+import { getIframeById, getItemById } from '../../utils';
 
 (async () => {
   await WA.onInit();
-  document.getElementById("closeModal")?.addEventListener("click", () => {
+  document.getElementById('closeModal')?.addEventListener('click', () => {
     close();
   });
 
-  const inventory = document.getElementById("inventory");
+  const inventory = document.getElementById('inventory');
 
   const items = await getPlayerInventory();
 
@@ -30,7 +30,7 @@ import { getIframeById, getItemById } from "../../utils";
     }
   }
 
-  //Creation of the cards in the inventory
+  // Creation of the cards in the inventory
   let nbCard = 30;
   items.length > 30 ? (nbCard = Math.ceil(items.length / 10) * 10) : null;
   for (let i = 0; i < nbCard; i++) {
@@ -50,77 +50,56 @@ import { getIframeById, getItemById } from "../../utils";
   }
 
   // Add event listener to each item
-  const cards = document.getElementsByClassName("card-filled");
+  const cards = document.getElementsByClassName('card-filled');
   for (let i = 0; i < cards.length; i++) {
-    cards[i].addEventListener("click", () => {
-      console.log("Item clicked", cards[i]);
+    cards[i].addEventListener('click', () => {
       if (items[i] !== undefined) {
         openItemModal(items[i]);
       }
     });
   }
 
-  const modal = document.getElementById("itemModal");
+  const modal = document.getElementById('itemModal');
 
   function openItemModal(item: Item) {
-    console.log("Open item modal", item);
     if (modal) {
-      modal.style.display = "block";
-      document.getElementById("itemModalTitle")!.innerHTML = item.name;
-      document.getElementById("itemModalDescription")!.innerHTML =
+      modal.style.display = 'block';
+      document.getElementById('itemModalTitle')!.innerHTML = item.name;
+      document.getElementById('itemModalDescription')!.innerHTML =
         item.description;
       document
-        .getElementById("tradeItem")!
-        .setAttribute("data-item", String(item.id));
-      //add data to the trade button
-      //TODO
+        .getElementById('tradeItem')!
+        .setAttribute('data-item', String(item.id));
     }
   }
 
   document
-    .getElementById("closeInteractModal")
-    ?.addEventListener("click", () => {
-      if (modal?.style.display === "block") {
-        modal.style.display = "none";
+    .getElementById('closeInteractModal')
+    ?.addEventListener('click', () => {
+      if (modal?.style.display === 'block') {
+        modal.style.display = 'none';
       }
     });
 
-  //Close the modal if the user clicks outside of it
-  // window.onclick = function (event) {
-  //   console.log("Click", event.target);
-  //   if (event.target !== modal && modal?.style.display === "block") {
-  //     console.log("Close modal");
-
-  //     modal!.style.display = "none";
-  //   }
-  // };
-
   // Close the modal if the user presses the escape key
   window.onkeydown = function (event) {
-    if (event.key === "Escape") {
+    if (event.key === 'Escape') {
       if (modal) {
-        modal.style.display = "none";
+        modal.style.display = 'none';
       }
     }
   };
 
-  document.getElementById("tradeItem")?.addEventListener("click", async (e) => {
-    console.log("Trade item4567", e.target);
-    const itemId = (<HTMLElement>e.target).getAttribute("data-item");
-    let item = await getItemById(itemId!);
-    const inventoryIframe = await getIframeById(
-      String(WA.player.state.inventory_id)
-    ); //Receive the iframe of the inventory to reposition it
+  document.getElementById('tradeItem')?.addEventListener('click', async (e) => {
+    const itemId = (e.target as HTMLElement).dataset.item;
+    const item = await getItemById(Number(itemId));
 
-    if (inventoryIframe) {
-      console.log("Trade item", inventoryIframe);
-      // inventoryIframe.position.horizontal = "left";
-      // const iframeExchange = await openExchange();
-      if (item) {
-        await addExchangeItem(item);
-      }
+    const inventoryIframe = await getIframeById(
+      String(WA.player.state.inventory_id),
+    ); // Receive the iframe of the inventory to reposition it
+
+    if (inventoryIframe && item) {
+      await addExchangeItem(item);
     }
-    // });
-    //TODO
   });
 })();

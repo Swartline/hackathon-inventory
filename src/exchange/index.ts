@@ -1,21 +1,20 @@
-import { UIWebsite } from "@workadventure/iframe-api-typings";
-import { Item, openInventoryLeft } from "../inventory";
-import { addItemToPlayerList, removeItemFromPlayerList } from "../utils";
-import { RemotePlayer } from "@workadventure/iframe-api-typings/play/src/front/Api/Iframe/Players/RemotePlayer";
+import { UIWebsite } from '@workadventure/iframe-api-typings';
+import { Item, openInventoryLeft } from '../inventory';
+import { addItemToPlayerList, removeItemFromPlayerList } from '../utils';
 
-export const EXCHANGE_PARTNER_UUID = "exchange_partner_uuid";
-export const EXCHANGE_LIST = "exchange_list";
+export const EXCHANGE_PARTNER_UUID = 'exchange_partner_uuid';
+export const EXCHANGE_LIST = 'exchange_list';
 
 const addExchangeButton = (): void => {
   WA.ui.onRemotePlayerClicked.subscribe((remotePlayer) => {
-    remotePlayer.addAction("Échanger", async () => {
+    remotePlayer.addAction('Échanger', async () => {
       await WA.player.state.saveVariable(
         EXCHANGE_PARTNER_UUID,
         remotePlayer.uuid,
         {
           public: true,
           persist: false,
-        }
+        },
       );
     });
   });
@@ -23,6 +22,7 @@ const addExchangeButton = (): void => {
 
 export const addExchangeItem = async (item: Item): Promise<Item[]> => {
   const proposedItems = await addItemToPlayerList(item, EXCHANGE_LIST);
+  console.log(proposedItems);
   return proposedItems;
 };
 
@@ -33,14 +33,14 @@ export const removeExchangeItem = async (item: Item): Promise<Item[]> => {
 
 export const openExchange = async (): Promise<UIWebsite> => {
   const iframeExchange = await WA.ui.website.open({
-    url: "./src/exchange/iframe/exchange.html",
+    url: './src/exchange/iframe/exchange.html',
     position: {
-      vertical: "middle",
-      horizontal: "right",
+      vertical: 'middle',
+      horizontal: 'right',
     },
     size: {
-      height: "50vh",
-      width: "50vw",
+      height: '50vh',
+      width: '50vw',
     },
     allowApi: true,
   });
@@ -49,12 +49,10 @@ export const openExchange = async (): Promise<UIWebsite> => {
 };
 
 export const initializeExchangeSystem = async (): Promise<void> => {
-  await WA.players.configureTracking({
-    players: true,
-    movement: false,
-  });
+  await WA.players.configureTracking({ players: true });
 
-  WA.player.state.saveVariable(EXCHANGE_PARTNER_UUID, null);
+  WA.player.state.saveVariable(EXCHANGE_PARTNER_UUID, null, { public: true });
+  WA.player.state.saveVariable(EXCHANGE_LIST, [], { public: true });
 
   WA.players
     .onVariableChange(EXCHANGE_PARTNER_UUID)
@@ -66,11 +64,9 @@ export const initializeExchangeSystem = async (): Promise<void> => {
           {
             public: true,
             persist: false,
-          }
+          },
         );
 
-        // TODO: display exchange iframe
-        console.log(`Displaying exchange iframe for player ${WA.player.uuid}`);
         await openInventoryLeft();
         await openExchange();
       }

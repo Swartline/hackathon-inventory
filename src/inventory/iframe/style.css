@@ -6,10 +6,22 @@ body {
   background-color: #262c44;
   border: 1px solid;
   border-radius: 7px;
-  font-family: Roboto, ui-sans-serif, system-ui, -apple-system,
-    BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans,
-    sans-serif, "Apple Color Emoji", "Segoe UI Emoji", Segoe UI Symbol,
-    "Noto Color Emoji";
+  font-family:
+    Roboto,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    Segoe UI,
+    Roboto,
+    Helvetica Neue,
+    Arial,
+    Noto Sans,
+    sans-serif,
+    'Apple Color Emoji',
+    'Segoe UI Emoji',
+    Segoe UI Symbol,
+    'Noto Color Emoji';
   min-height: 308px;
   box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.2);
 }
@@ -35,7 +47,8 @@ h1 {
   text-align: center;
 }
 
-#inventory {
+#inventory,
+#exchange-cells {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
