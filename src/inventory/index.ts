@@ -13,9 +13,26 @@ export { type Item };
 const INVENTORY: string = 'inventory';
 const items: Item[] = itemsJson.items;
 
+// ordonne la liste des items
+function compareByName(a: Item, b: Item) {
+  const nameA = a.name.toUpperCase();
+  const nameB = b.name.toUpperCase();
+
+  if (nameA < nameB) {
+    return -1;
+  }
+  if (nameA > nameB) {
+    return 1;
+  }
+  return 0;
+}
+
 export const getPlayerInventory = async (): Promise<Item[]> => {
-  const inventory = await getPlayerList(INVENTORY);
-  return inventory;
+  const inventory = (await WA.player.state.loadVariable(
+    INVENTORY_VARIABLE_NAME,
+  )) as Item[];
+
+  return inventory.sort(compareByName);
 };
 
 export const clearPlayerInventory = async (): Promise<void> => {
