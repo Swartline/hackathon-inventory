@@ -7,6 +7,7 @@ export { type Item };
 const INVENTORY_VARIABLE_NAME: string = 'inventory';
 const items: Item[] = itemsJson.items;
 
+// ordonne la liste des items
 function compareByName(a: Item, b: Item) {
   const nameA = a.name.toUpperCase();
   const nameB = b.name.toUpperCase();
