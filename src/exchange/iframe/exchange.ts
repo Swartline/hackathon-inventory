@@ -11,8 +11,12 @@ const getCellHTML = (item?: Item): string => {
           </div>`;
 };
 
-const refreshCells = (inventory: HTMLElement, items: Item[] = []) => {
-  const MIN_NB_CELLS = 9;
+const refreshCells = (inventory: HTMLElement | null, items: Item[] = []) => {
+  if (!inventory) {
+    throw new Error('Missing interface');
+  }
+
+  const MIN_NB_CELLS = 10;
   const displayedNbCells = Math.max(
     Math.ceil(items.length / 10) * 10,
     MIN_NB_CELLS,
@@ -40,10 +44,8 @@ const refreshCells = (inventory: HTMLElement, items: Item[] = []) => {
   const exchangeHTML = document.getElementById('exchange-cells');
   const remoteExchangeHTML = document.getElementById('remote-exchange-cells');
   // Display initial empty cells
-  if (exchangeHTML && remoteExchangeHTML) {
-    refreshCells(exchangeHTML);
-    refreshCells(remoteExchangeHTML);
-  }
+  refreshCells(exchangeHTML);
+  refreshCells(remoteExchangeHTML);
 
   // Creation of the cells in the inventory
   const remotePlayer = await getRemotePlayerByUuid(
@@ -54,10 +56,12 @@ const refreshCells = (inventory: HTMLElement, items: Item[] = []) => {
     throw new Error('No remote player');
   }
 
+  WA.player.state.onVariableChange(EXCHANGE_LIST).subscribe((items: any) => {
+    refreshCells(exchangeHTML, items);
+  });
+
   remotePlayer.state.onVariableChange(EXCHANGE_LIST).subscribe((items: any) => {
-    if (exchangeHTML) {
-      refreshCells(exchangeHTML, items);
-    }
+    refreshCells(remoteExchangeHTML, items);
   });
 
   async function close() {
