@@ -1,1 +1,0 @@
-const a="inventory",n=async()=>await WA.player.state.loadVariable(a),r=async()=>{await n()===void 0&&await WA.player.state.saveVariable(a,[])},s=async()=>{await WA.player.state.saveVariable(a,[])},i=async t=>{const e=await n();return e.push(t),await WA.player.state.saveVariable(a,e),e};export{i as a,s as c,n as g,r as i};

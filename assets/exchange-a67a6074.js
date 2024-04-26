@@ -1,0 +1,3 @@
+import"./style-6dee42fd.js";import{g as s}from"./index-ed88df83.js";(async()=>{var i;await WA.onInit(),(i=document.getElementById("closeModal"))==null||i.addEventListener("click",()=>{o()});const t=document.getElementById("inventory"),e=await s();function l(n){t!=null&&(n===void 0?t.innerHTML+='<div class="card"></div>':t.innerHTML+=`<div class="card">
+            <img src="${n==null?void 0:n.sprite_url}" alt="${n==null?void 0:n.description}" title="${n.name}" style="width:95%">
+          </div>`)}let a=15;e.length>15&&(a=Math.ceil(e.length/10)*10);for(let n=0;n<a;n++)e[n]!==void 0?l(e[n]):l();async function o(){WA.ui.website.getById(String(WA.player.state.exchange_id)).then(n=>{n&&(WA.player.state.inventory_open=!1,n.close())})}})();
