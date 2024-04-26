@@ -1,3 +1,5 @@
+import { Item } from '../inventory';
+
 const EXCHANGE_PARTNER_UUID = 'exchange_partner_uuid';
 
 const addExchangeButton = (): void => {
@@ -13,6 +15,10 @@ const addExchangeButton = (): void => {
       );
     });
   });
+};
+
+export const addExchangeItem = async (item: Item): Promise<void> => {
+  return;
 };
 
 export const initializeExchangeSystem = async (): Promise<void> => {

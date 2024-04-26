@@ -1,6 +1,12 @@
-import { type Item } from './item';
+import { type Item } from '../utils/item';
 import { UIWebsite } from '@workadventure/iframe-api-typings';
 import itemsJson from './items.json';
+import {
+  addItemToPlayerList,
+  clearPlayerList,
+  getPlayerList,
+  removeItemFromPlayerList,
+} from '../utils';
 
 export { type Item };
 
@@ -8,47 +14,28 @@ const INVENTORY: string = 'inventory';
 const items: Item[] = itemsJson.items;
 
 export const getPlayerInventory = async (): Promise<Item[]> => {
-  const inventory = (await WA.player.state.loadVariable(INVENTORY)) as Item[];
+  const inventory = await getPlayerList(INVENTORY);
   return inventory;
-};
-
-export const initPlayerInventory = async (): Promise<void> => {
-  const inventory = await getPlayerInventory();
-  if (inventory === undefined) {
-    await WA.player.state.saveVariable(INVENTORY, []);
-  }
 };
 
 export const clearPlayerInventory = async (): Promise<void> => {
-  await WA.player.state.saveVariable(INVENTORY, []);
+  await clearPlayerList(INVENTORY);
 };
 
 export const addPlayerItem = async (item: Item): Promise<Item[]> => {
-  const inventory = await getPlayerInventory();
-  inventory.push(item);
-  await WA.player.state.saveVariable(INVENTORY, inventory);
-  return inventory;
+  const newInventory = await addItemToPlayerList(item, INVENTORY);
+  return newInventory;
 };
 
 export const removePlayerItem = async (item: Item): Promise<Item[]> => {
-  const inventory = await getPlayerInventory();
-
-  inventory.forEach((currentItem: Item, index: number) => {
-    if (currentItem.id === item.id) {
-      inventory.splice(index, 1);
-    }
-  });
-
-  await WA.player.state.saveVariable(INVENTORY, inventory);
-
-  return inventory;
+  const newInventory = await removeItemFromPlayerList(item, INVENTORY);
+  return newInventory;
 };
 
 export const initializeInventorySystem = async (): Promise<void> => {
-  await initPlayerInventory();
+  // TODO: remove
+  // Load sample items
   await clearPlayerInventory();
-
-  // Add sample items
   for (const item of items) {
     await addPlayerItem(item);
   }
