@@ -7,17 +7,31 @@ export { type Item };
 const INVENTORY_VARIABLE_NAME: string = 'inventory';
 const items: Item[] = itemsJson.items;
 
+function compareByName(a: Item, b: Item) {
+  const nameA = a.name.toUpperCase();
+  const nameB = b.name.toUpperCase();
+
+  if (nameA < nameB) {
+    return -1;
+  }
+  if (nameA > nameB) {
+    return 1;
+  }
+  return 0;
+}
+
 export const getPlayerInventory = async (): Promise<Item[]> => {
   const inventory = (await WA.player.state.loadVariable(
     INVENTORY_VARIABLE_NAME,
   )) as Item[];
-  return inventory;
+
+  return inventory.sort(compareByName);
 };
 
 export const initPlayerInventory = async (): Promise<void> => {
   const inventory = await getPlayerInventory();
   if (inventory === undefined) {
-    await WA.player.state.saveVariable(INVENTORY_VARIABLE_NAME, []);
+    await WA.player.state.saveVariable(INVENTORY_VARIABLE_NAME, [], { public: true, persist: true });
   }
 };
 
