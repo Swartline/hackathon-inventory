@@ -1,13 +1,13 @@
-import { UIWebsite } from '@workadventure/iframe-api-typings';
-import { Item, getPlayerInventory } from '..';
+import { UIWebsite } from "@workadventure/iframe-api-typings";
+import { Item, getPlayerInventory } from "..";
 
 (async () => {
   await WA.onInit();
-  document.getElementById('closeModal')?.addEventListener('click', () => {
+  document.getElementById("closeModal")?.addEventListener("click", () => {
     close();
   });
 
-  const inventory = document.getElementById('inventory');
+  const inventory = document.getElementById("inventory");
 
   const items = await getPlayerInventory();
 
@@ -16,8 +16,14 @@ import { Item, getPlayerInventory } from '..';
       if (item === undefined) {
         inventory.innerHTML += `<div class="card"></div>`;
       } else {
-        inventory.innerHTML += `<div class="card">
-            <img src="${item?.sprite_url}" alt="${item?.description}" title="${item.name}" style="width:95%">
+        inventory.innerHTML += `<div class="card-filled">
+            <img 
+              src="${item?.sprite_url}" 
+              alt="${item?.description}" 
+              title="${item.name}" 
+              style="width:95%"
+              onclick=""
+            >
           </div>`;
       }
     }
@@ -44,4 +50,55 @@ import { Item, getPlayerInventory } from '..';
         }
       });
   }
+
+  // Add event listener to each item
+  const cards = document.getElementsByClassName("card-filled");
+  for (let i = 0; i < cards.length; i++) {
+    cards[i].addEventListener("click", () => {
+      console.log("Item clicked", cards[i]);
+      if (items[i] !== undefined) {
+        openItemModal(items[i]);
+      }
+    });
+  }
+
+  const modal = document.getElementById("itemModal");
+
+  function openItemModal(item: Item) {
+    console.log("Open item modal", item);
+    if (modal) {
+      modal.style.display = "block";
+      document.getElementById("itemModalTitle")!.innerHTML = item.name;
+      document.getElementById("itemModalDescription")!.innerHTML =
+        item.description;
+      //TODO
+    }
+  }
+
+  document
+    .getElementById("closeInteractModal")
+    ?.addEventListener("click", () => {
+      if (modal?.style.display === "block") {
+        modal.style.display = "none";
+      }
+    });
+
+  //Close the modal if the user clicks outside of it
+  // window.onclick = function (event) {
+  //   console.log("Click", event.target);
+  //   if (event.target !== modal && modal?.style.display === "block") {
+  //     console.log("Close modal");
+
+  //     modal!.style.display = "none";
+  //   }
+  // };
+
+  // Close the modal if the user presses the escape key
+  window.onkeydown = function (event) {
+    if (event.key === "Escape") {
+      if (modal) {
+        modal.style.display = "none";
+      }
+    }
+  };
 })();
