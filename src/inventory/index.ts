@@ -1,12 +1,29 @@
-import { type Item } from './item';
+import { type Item } from '../utils/item';
 import { UIWebsite } from '@workadventure/iframe-api-typings';
 import itemsJson from './items.json';
-import { addItemToPlayerList, getPlayerList, removeItemFromPlayerList } from '../utils';
+import {
+  addItemToPlayerList,
+  getPlayerList,
+  removeItemFromPlayerList,
+} from '../utils';
 
 export { type Item };
 
 const INVENTORY: string = 'inventory';
 const items: Item[] = itemsJson.items;
+
+const compareByName = (a: Item, b: Item) => {
+  const nameA = a.name.toUpperCase();
+  const nameB = b.name.toUpperCase();
+
+  if (nameA < nameB) {
+    return -1;
+  }
+  if (nameA > nameB) {
+    return 1;
+  }
+  return 0;
+};
 
 export const getPlayerInventory = async (): Promise<Item[]> => {
   const inventory = await getPlayerList(INVENTORY);
