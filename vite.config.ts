@@ -44,6 +44,7 @@ export default defineConfig({
       input: {
         index: './index.html',
         inventory: './src/inventory/iframe/inventory.html',
+        exchange: './src/exchange/iframe/exchange.html',
         ...getMapsScripts(maps),
       },
     },
