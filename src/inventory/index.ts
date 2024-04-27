@@ -1,16 +1,15 @@
-import { type Item } from "../utils/item";
-import { UIWebsite } from "@workadventure/iframe-api-typings";
-import itemsJson from "./items.json";
+import { type Item } from '../utils/item';
+import { UIWebsite } from '@workadventure/iframe-api-typings';
+import itemsJson from './items.json';
 import {
   addItemToPlayerList,
   getPlayerList,
   removeItemFromPlayerList,
-} from "../utils";
-import { EXCHANGE_LIST } from "../exchange";
+} from '../utils';
 
 export { type Item };
 
-const INVENTORY: string = "inventory";
+const INVENTORY: string = 'inventory';
 const items: Item[] = itemsJson.items;
 
 const compareByName = (a: Item, b: Item) => {
@@ -34,16 +33,6 @@ export const getPlayerInventory = async (): Promise<Item[]> => {
   return inventory.sort(compareByName);
 };
 
-export const getPlayerExchange = async (): Promise<Item[]> => {
-  const inventory = await getPlayerList(EXCHANGE_LIST);
-  console.log("init item exchange", inventory);
-
-  if (!inventory) {
-    return [];
-  }
-  return inventory.sort(compareByName);
-};
-
 export const clearPlayerInventory = async (): Promise<void> => {
   await WA.player.state.saveVariable(INVENTORY, []);
 };
@@ -60,14 +49,14 @@ export const removePlayerItem = async (item: Item): Promise<Item[]> => {
 
 export const openInventory = async (): Promise<UIWebsite> => {
   const inventoryIframe = await WA.ui.website.open({
-    url: "./src/inventory/iframe/inventory.html",
+    url: './src/inventory/iframe/inventory.html',
     position: {
-      vertical: "middle",
-      horizontal: "middle",
+      vertical: 'middle',
+      horizontal: 'middle',
     },
     size: {
-      height: "50vh",
-      width: "50vw",
+      height: '50vh',
+      width: '50vw',
     },
     allowApi: true,
   });
@@ -80,14 +69,14 @@ export const openInventory = async (): Promise<UIWebsite> => {
 
 export const openInventoryLeft = async (): Promise<UIWebsite> => {
   const inventoryIframe = await WA.ui.website.open({
-    url: "./src/inventory/iframe/inventory.html",
+    url: './src/inventory/iframe/inventory.html',
     position: {
-      vertical: "middle",
-      horizontal: "left",
+      vertical: 'middle',
+      horizontal: 'left',
     },
     size: {
-      height: "50vh",
-      width: "50vw",
+      height: '50vh',
+      width: '50vw',
     },
     allowApi: true,
   });
@@ -99,7 +88,7 @@ export const openInventoryLeft = async (): Promise<UIWebsite> => {
 };
 
 export const closeInventory = async (
-  inventoryIframe: UIWebsite
+  inventoryIframe: UIWebsite,
 ): Promise<void> => {
   inventoryIframe.close();
   WA.player.state.inventory_open = false;
@@ -116,10 +105,10 @@ export const initializeInventorySystem = async (): Promise<void> => {
   let inventoryIframe: UIWebsite | undefined;
 
   WA.ui.actionBar.addButton({
-    id: "inventory-btn",
-    type: "action",
-    imageSrc: "https://cdn-icons-png.flaticon.com/512/4138/4138061.png",
-    toolTip: "Inventaire",
+    id: 'inventory-btn',
+    type: 'action',
+    imageSrc: 'https://cdn-icons-png.flaticon.com/512/4138/4138061.png',
+    toolTip: 'Inventaire',
     callback: async () => {
       if (!inventoryIframe) {
         inventoryIframe = await openInventory();
@@ -130,7 +119,7 @@ export const initializeInventorySystem = async (): Promise<void> => {
     },
   });
 
-  WA.player.state.onVariableChange("inventory_open").subscribe((value) => {
+  WA.player.state.onVariableChange('inventory_open').subscribe((value) => {
     if (!value) {
       inventoryIframe = undefined;
     }

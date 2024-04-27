@@ -1,15 +1,15 @@
+* {
+  font-family: Roboto, sans-serif;
+}
+
 :root {
   background-color: rgba(0, 0, 0, 0.01);
 }
+
 body {
-  font-family: Arial, sans-serif;
   background-color: #262c44;
   border: 1px solid;
-  border-radius: 7px;
-  font-family: Roboto, ui-sans-serif, system-ui, -apple-system,
-    BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans,
-    sans-serif, "Apple Color Emoji", "Segoe UI Emoji", Segoe UI Symbol,
-    "Noto Color Emoji";
+  border-radius: 4px;
   min-height: 308px;
   box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.2);
 }
@@ -31,11 +31,14 @@ button {
 }
 
 h1 {
+  font-size: 20px;
   color: #fff;
   text-align: center;
 }
 
-#inventory {
+#inventory,
+#exchange-cells,
+#remote-exchange-cells {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -51,11 +54,13 @@ h1 {
 
 .card,
 .card-filled {
-  height: 60px;
-  width: 60px;
+  width: 48px;
+  height: 48px;
   border: 1px solid #ccc;
   border-radius: 5px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  padding: 7.5px;
+  box-sizing: border-box;
 }
 
 #itemModal {
