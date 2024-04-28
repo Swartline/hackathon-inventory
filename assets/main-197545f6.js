@@ -1,1 +1,0 @@
-import{k as n,l as a}from"./index-3ab0f3d8.js";const t=async()=>{await WA.onInit(),await n(),WA.ui.onRemotePlayerClicked.subscribe(i=>{i.addAction("Voir inventaire",()=>{console.warn("Not implemented"),console.warn(i.state.inventory)})}),await a()};t();
