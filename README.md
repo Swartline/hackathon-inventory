@@ -50,6 +50,11 @@ Une fois arriver sur la carte :
 
 8. Visualiser vos nouveaux objets dans votre inventaire
 
+## Perspectives
+
+Notre équipe s'est essayée à la création d'un librairie afin que n'importe quel utilisateur de WorkAdventure puisse utiliser notre solution.
+Malheureusement la création d'une librairie possédant des fichiers HTML (Iframes) c'est avéré une tache plus compliquée que prévue. Avec davantage de temps, nous sommes convaincus que nous aurions pu arriver à bout de notre objectif de librairie.
+
 ## WorkAdventure Map Starter Kit
 
 ![map](./map.png)
