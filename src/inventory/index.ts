@@ -11,7 +11,11 @@ import {
 export { type Item };
 
 export const INVENTORY: string = 'inventory';
-const items: Item[] = itemsJson.items;
+let items = itemsJson.items;
+items = items.map((item) => {
+  const newItem = { id: crypto.randomUUID(), ...item };
+  return newItem;
+}) as Item[];
 
 const compareByName = (a: Item, b: Item) => {
   const nameA = a.name.toUpperCase();
@@ -100,7 +104,7 @@ export const initializeInventorySystem = async (): Promise<void> => {
   await clearPlayerInventory();
 
   // Add sample items
-  for (const item of items) {
+  for (const item of items as Item[]) {
     await addPlayerItem(item);
   }
 

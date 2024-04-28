@@ -95,15 +95,14 @@ import {
 
   btnCancelItem?.addEventListener('click', async (e) => {
     const itemId = (e.target as HTMLElement).dataset.item;
-
-    const item = await getItemByIdFromPlayerList(Number(itemId));
+    const item = await getItemByIdFromPlayerList(itemId as string);
 
     if (!item) {
       throw new Error('Item not found');
     }
 
     if (item) {
-      removeItemFromPlayerList(item, EXCHANGE_LIST);
+      removeItemFromPlayerList(item, EXCHANGE_LIST, { persist: false });
       closeItemModal();
       await addPlayerItem(item);
     }
@@ -156,7 +155,10 @@ import {
     });
 
   const confirmExchange = async () => {
-    WA.player.state.saveVariable('trade_confirmed', true, { public: true });
+    WA.player.state.saveVariable('trade_confirmed', true, {
+      public: true,
+      persist: false,
+    });
   };
 
   const resetExchangePartner = () => {
@@ -203,7 +205,7 @@ import {
         await addPlayerItem(item);
       }
 
-      await clearPlayerList(EXCHANGE_LIST);
+      await clearPlayerList(EXCHANGE_LIST, { persist: false });
       resetExchangePartner();
     }
   };

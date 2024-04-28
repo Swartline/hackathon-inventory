@@ -116,7 +116,7 @@ import { getItemById } from '../../utils';
 
   document.getElementById('tradeItem')?.addEventListener('click', async (e) => {
     const itemId = (e.target as HTMLElement).dataset.item;
-    const item = await getItemById(Number(itemId));
+    const item = await getItemById(itemId as string);
 
     if (item) {
       await removePlayerItem(item);
