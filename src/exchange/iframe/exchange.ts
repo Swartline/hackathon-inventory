@@ -25,6 +25,7 @@ import {
 
   document.getElementById('closeModal')?.addEventListener('click', () => {
     closeInventoryAndExchangeIframes();
+    resetExchangePartner();
   });
 
   const getCellHTML = (item?: Item): string => {
@@ -105,6 +106,12 @@ import {
       removeItemFromPlayerList(item, EXCHANGE_LIST, { persist: false });
       closeItemModal();
       await addPlayerItem(item);
+
+      // Reset confirm state
+      WA.player.state.saveVariable('trade_confirmed', false, {
+        public: true,
+        persist: false,
+      });
     }
   });
 
@@ -126,43 +133,60 @@ import {
     refreshCells(exchangeHTML, items);
   });
 
-  remotePlayer.state.onVariableChange(EXCHANGE_LIST).subscribe((items: any) => {
-    refreshCells(remoteExchangeHTML, items);
-  });
+  remotePlayer.state
+    .onVariableChange(EXCHANGE_LIST)
+    .subscribe(async (items: any) => {
+      refreshCells(remoteExchangeHTML, items);
+      await WA.player.state.saveVariable('trade_confirmed', false, {
+        public: true,
+        persist: false,
+      });
+    });
 
-  WA.player.state.saveVariable('trade_confirmed', false, { public: true });
+  await WA.player.state.saveVariable('trade_confirmed', false, {
+    public: true,
+    persist: false,
+  });
 
   remotePlayer.state
     .onVariableChange('trade_confirmed')
-    .subscribe((items: any) => {
-      if (items === true) {
+    .subscribe(async (isTradeConfirmed: any) => {
+      if (isTradeConfirmed) {
         overlayForRemoteItems!.style.display = 'block';
         checkExchange();
-      } else if (items === false) {
+      } else {
         overlayForRemoteItems!.style.display = 'none';
       }
     });
 
   WA.player.state
     .onVariableChange('trade_confirmed')
-    .subscribe((items: any) => {
-      if (items === true) {
+    .subscribe((isTradeConfirmed: any) => {
+      const confirmButton = document.querySelector(
+        '#btn-valid-exchange',
+      ) as HTMLElement;
+
+      if (isTradeConfirmed) {
         overlayForMyItems!.style.display = 'block';
+        confirmButton.innerHTML = 'Modifier';
         checkExchange();
-      } else if (items === false) {
+      } else {
         overlayForMyItems!.style.display = 'none';
+        confirmButton.innerHTML = 'Valider';
       }
     });
 
   const confirmExchange = async () => {
-    WA.player.state.saveVariable('trade_confirmed', true, {
+    const isTradeConfirmed = !WA.player.state.trade_confirmed;
+
+    await WA.player.state.saveVariable('trade_confirmed', isTradeConfirmed, {
       public: true,
       persist: false,
     });
   };
 
-  const resetExchangePartner = () => {
-    WA.player.state.saveVariable(EXCHANGE_PARTNER_UUID, null, {
+  const resetExchangePartner = async () => {
+    await WA.player.state.saveVariable(EXCHANGE_PARTNER_UUID, null, {
       public: true,
       persist: false,
     });
@@ -181,15 +205,15 @@ import {
   // Listen to trade cancelled or finished
   remotePlayer.state
     .onVariableChange(EXCHANGE_PARTNER_UUID)
-    .subscribe((value) => {
+    .subscribe(async (value) => {
       if (!value) {
-        WA.player.state.saveVariable(EXCHANGE_PARTNER_UUID, null, {
+        await WA.player.state.saveVariable(EXCHANGE_PARTNER_UUID, null, {
           public: true,
           persist: false,
         });
       }
 
-      closeInventoryAndExchangeIframes();
+      await closeInventoryAndExchangeIframes();
     });
 
   const checkExchange = async () => {
@@ -206,7 +230,7 @@ import {
       }
 
       await clearPlayerList(EXCHANGE_LIST, { persist: false });
-      resetExchangePartner();
+      await resetExchangePartner();
     }
   };
 })();

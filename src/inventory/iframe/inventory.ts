@@ -123,6 +123,12 @@ import { getItemById } from '../../utils';
       refreshCells(inventory, await getPlayerInventory());
       closeItemModal();
       await addExchangeItem(item);
+
+      // Reset confirm state
+      WA.player.state.saveVariable('trade_confirmed', false, {
+        public: true,
+        persist: false,
+      });
     }
   });
 })();
