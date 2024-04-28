@@ -13,23 +13,32 @@ export const getPlayerList = async (
 
 export const clearPlayerList = async (
   listVariableName: string,
+  options?: { public?: boolean; persist?: boolean },
 ): Promise<void> => {
-  await WA.player.state.saveVariable(listVariableName, [], { public: true });
+  await WA.player.state.saveVariable(listVariableName, [], {
+    public: true,
+    ...options,
+  });
 };
 
 export const addItemToPlayerList = async (
   item: Item,
   listVariableName: string,
+  options?: { public?: boolean; persist?: boolean },
 ): Promise<Item[]> => {
   const list = await getPlayerList(listVariableName);
   list.push(item);
-  await WA.player.state.saveVariable(listVariableName, list, { public: true });
+  await WA.player.state.saveVariable(listVariableName, list, {
+    public: true,
+    ...options,
+  });
   return list;
 };
 
 export const removeItemFromPlayerList = async (
   item: Item,
   listVariableName: string,
+  options?: { public?: boolean; persist?: boolean },
 ): Promise<Item[]> => {
   const list = await getPlayerList(listVariableName);
 
@@ -39,24 +48,28 @@ export const removeItemFromPlayerList = async (
     }
   });
 
-  await WA.player.state.saveVariable(listVariableName, list, { public: true });
+  await WA.player.state.saveVariable(listVariableName, list, {
+    public: true,
+    ...options,
+  });
 
   return list;
 };
 
 export const clearItemsFromPlayerList = async (
   listVariableName: string,
+  options?: { public?: boolean; persist?: boolean },
 ): Promise<void> => {
-  await WA.player.state.saveVariable(listVariableName, []);
+  await WA.player.state.saveVariable(listVariableName, [], options);
 };
 
 export async function getItemByIdFromPlayerList(
-  id: number,
+  id: string,
 ): Promise<Item | undefined> {
   return (await getPlayerList(EXCHANGE_LIST)).find((item) => item.id === id);
 }
 
-export async function getItemById(id: number): Promise<Item | undefined> {
+export async function getItemById(id: string): Promise<Item | undefined> {
   return (await getPlayerList('inventory')).find((item) => item.id === id);
 }
 

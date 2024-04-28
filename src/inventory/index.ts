@@ -11,7 +11,11 @@ import {
 export { type Item };
 
 export const INVENTORY: string = 'inventory';
-const items: Item[] = itemsJson.items;
+let items = itemsJson.items;
+items = items.map((item) => {
+  const newItem = { id: crypto.randomUUID(), ...item };
+  return newItem;
+}) as Item[];
 
 const compareByName = (a: Item, b: Item) => {
   const nameA = a.name.toUpperCase();
@@ -100,7 +104,7 @@ export const initializeInventorySystem = async (): Promise<void> => {
   await clearPlayerInventory();
 
   // Add sample items
-  for (const item of items) {
+  for (const item of items as Item[]) {
     await addPlayerItem(item);
   }
 
@@ -109,7 +113,8 @@ export const initializeInventorySystem = async (): Promise<void> => {
   WA.ui.actionBar.addButton({
     id: 'inventory-btn',
     type: 'action',
-    imageSrc: 'https://cdn-icons-png.flaticon.com/512/4138/4138061.png',
+    imageSrc:
+      'https://ryanmalonzo.github.io/workadventure-inventory-icons/backpack.png',
     toolTip: 'Inventaire',
     callback: async () => {
       if (!inventoryIframe) {

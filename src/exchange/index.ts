@@ -27,7 +27,6 @@ const addExchangeButton = (): void => {
 
 export const addExchangeItem = async (item: Item): Promise<Item[]> => {
   const proposedItems = await addItemToPlayerList(item, EXCHANGE_LIST);
-  console.log(proposedItems);
   return proposedItems;
 };
 
@@ -49,7 +48,9 @@ export const openExchange = async (): Promise<UIWebsite> => {
     },
     allowApi: true,
   });
-  WA.player.state.exchange_id = iframeExchange.id;
+  WA.player.state.saveVariable('exchange_id', iframeExchange.id, {
+    persist: false,
+  });
   await openInventoryLeft();
   return iframeExchange;
 };
@@ -86,8 +87,14 @@ export async function closeInventoryAndExchangeIframes(): Promise<void> {
 export const initializeExchangeSystem = async (): Promise<void> => {
   await WA.players.configureTracking({ players: true });
 
-  WA.player.state.saveVariable(EXCHANGE_PARTNER_UUID, null, { public: true });
-  WA.player.state.saveVariable(EXCHANGE_LIST, [], { public: true });
+  WA.player.state.saveVariable(EXCHANGE_PARTNER_UUID, null, {
+    public: true,
+    persist: false,
+  });
+  WA.player.state.saveVariable(EXCHANGE_LIST, [], {
+    public: true,
+    persist: false,
+  });
 
   WA.players
     .onVariableChange(EXCHANGE_PARTNER_UUID)

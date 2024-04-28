@@ -1,6 +1,5 @@
 .buttons-container {
   display: flex;
-  gap: 24px;
   padding: 10px;
 }
 
@@ -26,7 +25,7 @@
 }
 
 #btn-valid-exchange:hover,
-#bbtn-cancel-exchange:hover {
+#btn-cancel-exchange:hover {
   opacity: 1;
 }
 

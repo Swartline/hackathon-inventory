@@ -1,15 +1,11 @@
 import { INVENTORY, Item, getPlayerInventory, removePlayerItem } from '..';
-import { addExchangeItem } from '../../exchange';
+import { addExchangeItem, EXCHANGE_PARTNER_UUID } from '../../exchange';
 import { getItemById } from '../../utils';
 
 (async () => {
   await WA.onInit();
-  // document.getElementById('closeModal')?.addEventListener('click', async () => {
-  //   await closeInventoryAndExchangeIframes();
-  // });
 
   const inventory = document.getElementById('inventory');
-
   const items = await getPlayerInventory();
 
   const getCellHTML = (item?: Item): string => {
@@ -75,9 +71,19 @@ import { getItemById } from '../../utils';
       document.getElementById('itemModalTitle')!.innerHTML = item.name;
       document.getElementById('itemModalDescription')!.innerHTML =
         item.description;
-      document
-        .getElementById('tradeItem')!
-        .setAttribute('data-item', String(item.id));
+
+      const tradeButton = document.getElementById('tradeItem') as HTMLElement;
+
+      if (!tradeButton) {
+        throw new Error('Trade button not found');
+      }
+
+      tradeButton.setAttribute('data-item', String(item.id));
+      if (WA.player.state[EXCHANGE_PARTNER_UUID]) {
+        tradeButton.style.display = 'block';
+      } else {
+        tradeButton.style.display = 'none';
+      }
     }
   }
 
@@ -106,13 +112,19 @@ import { getItemById } from '../../utils';
 
   document.getElementById('tradeItem')?.addEventListener('click', async (e) => {
     const itemId = (e.target as HTMLElement).dataset.item;
-    const item = await getItemById(Number(itemId));
+    const item = await getItemById(itemId as string);
 
     if (item) {
       await removePlayerItem(item);
       refreshCells(inventory, await getPlayerInventory());
       closeItemModal();
       await addExchangeItem(item);
+
+      // Reset confirm state
+      WA.player.state.saveVariable('trade_confirmed', false, {
+        public: true,
+        persist: false,
+      });
     }
   });
 })();
