@@ -109,7 +109,8 @@ export const initializeInventorySystem = async (): Promise<void> => {
   WA.ui.actionBar.addButton({
     id: 'inventory-btn',
     type: 'action',
-    imageSrc: 'https://cdn-icons-png.flaticon.com/512/4138/4138061.png',
+    imageSrc:
+      'https://ryanmalonzo.github.io/workadventure-inventory-icons/backpack.png',
     toolTip: 'Inventaire',
     callback: async () => {
       if (!inventoryIframe) {
