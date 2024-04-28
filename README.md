@@ -8,7 +8,7 @@
 
 ## Listing des fonctionnalités
 
-- Front inventaire (Rayan Malonzo - Frederic LOPEZ)
+- Front inventaire (Rayan Malonzo - Frederic LOPEZ - Matteo MARINHO)
 - Gestion inventaire (Matteo MARINHO)
 - Assigner des objets à un joueur (Rayan Malonzo)
 - Visualisation des détails objet: nom, description, souhait de l'échanger (Ryan MALONZO, Frederic LOPEZ)
