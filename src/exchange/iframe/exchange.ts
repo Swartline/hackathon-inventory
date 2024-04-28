@@ -159,8 +159,15 @@ import {
     WA.player.state.saveVariable('trade_confirmed', true, { public: true });
   };
 
+  const resetExchangePartner = () => {
+    WA.player.state.saveVariable(EXCHANGE_PARTNER_UUID, null, {
+      public: true,
+      persist: false,
+    });
+  };
+
   const cancelExchange = async () => {
-    WA.player.state.saveVariable('trade_confirmed', false, { public: true });
+    resetExchangePartner();
   };
 
   const btnCancelExchange = document.getElementById('btn-cancel-exchange');
@@ -168,6 +175,20 @@ import {
 
   const btnValidExchange = document.getElementById('btn-valid-exchange');
   btnValidExchange?.addEventListener('click', confirmExchange);
+
+  // Listen to trade cancelled or finished
+  remotePlayer.state
+    .onVariableChange(EXCHANGE_PARTNER_UUID)
+    .subscribe((value) => {
+      if (!value) {
+        WA.player.state.saveVariable(EXCHANGE_PARTNER_UUID, null, {
+          public: true,
+          persist: false,
+        });
+      }
+
+      closeInventoryAndExchangeIframes();
+    });
 
   const checkExchange = async () => {
     if (
@@ -183,7 +204,7 @@ import {
       }
 
       await clearPlayerList(EXCHANGE_LIST);
-      await closeInventoryAndExchangeIframes();
+      resetExchangePartner();
     }
   };
 })();
