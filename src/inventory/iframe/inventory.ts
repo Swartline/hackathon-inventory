@@ -4,12 +4,8 @@ import { getItemById } from '../../utils';
 
 (async () => {
   await WA.onInit();
-  // document.getElementById('closeModal')?.addEventListener('click', async () => {
-  //   await closeInventoryAndExchangeIframes();
-  // });
 
   const inventory = document.getElementById('inventory');
-
   const items = await getPlayerInventory();
 
   const getCellHTML = (item?: Item): string => {
