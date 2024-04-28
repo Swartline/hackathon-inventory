@@ -15,6 +15,20 @@ const main = async (): Promise<void> => {
   });
 
   await initializeExchangeSystem();
+
+  WA.room.area.onEnter('classification').subscribe(() => {
+    WA.ui.modal.openModal({
+      title: 'Classement des points',
+      src: 'https://ryanmalonzo.github.io/workadventure-leaderboard/dist/',
+      allow: 'fullscreen',
+      allowApi: true,
+      position: 'right',
+    });
+  });
+
+  WA.room.area.onLeave('classification').subscribe(() => {
+    WA.ui.modal.closeModal();
+  });
 };
 
 main();
