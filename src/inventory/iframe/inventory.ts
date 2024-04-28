@@ -1,5 +1,5 @@
 import { INVENTORY, Item, getPlayerInventory, removePlayerItem } from '..';
-import { addExchangeItem } from '../../exchange';
+import { addExchangeItem, EXCHANGE_PARTNER_UUID } from '../../exchange';
 import { getItemById } from '../../utils';
 
 (async () => {
@@ -75,9 +75,19 @@ import { getItemById } from '../../utils';
       document.getElementById('itemModalTitle')!.innerHTML = item.name;
       document.getElementById('itemModalDescription')!.innerHTML =
         item.description;
-      document
-        .getElementById('tradeItem')!
-        .setAttribute('data-item', String(item.id));
+
+      const tradeButton = document.getElementById('tradeItem') as HTMLElement;
+
+      if (!tradeButton) {
+        throw new Error('Trade button not found');
+      }
+
+      tradeButton.setAttribute('data-item', String(item.id));
+      if (WA.player.state[EXCHANGE_PARTNER_UUID]) {
+        tradeButton.style.display = 'block';
+      } else {
+        tradeButton.style.display = 'none';
+      }
     }
   }
 
