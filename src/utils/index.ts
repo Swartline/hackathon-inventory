@@ -1,6 +1,7 @@
 import { UIWebsite } from '@workadventure/iframe-api-typings';
 import { Item } from '../inventory';
 import { RemotePlayerInterface } from '@workadventure/iframe-api-typings/play/src/front/Api/Iframe/Players/RemotePlayer';
+import { EXCHANGE_LIST } from '../exchange';
 
 // Utilitary functions to handle adding and removing items in lists
 export const getPlayerList = async (
@@ -42,6 +43,18 @@ export const removeItemFromPlayerList = async (
 
   return list;
 };
+
+export const clearItemsFromPlayerList = async (
+  listVariableName: string,
+): Promise<void> => {
+  await WA.player.state.saveVariable(listVariableName, []);
+};
+
+export async function getItemByIdFromPlayerList(
+  id: number,
+): Promise<Item | undefined> {
+  return (await getPlayerList(EXCHANGE_LIST)).find((item) => item.id === id);
+}
 
 export async function getItemById(id: number): Promise<Item | undefined> {
   return (await getPlayerList('inventory')).find((item) => item.id === id);

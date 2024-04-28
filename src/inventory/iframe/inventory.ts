@@ -1,53 +1,61 @@
-import { Item, getPlayerInventory } from '..';
+import { INVENTORY, Item, getPlayerInventory, removePlayerItem } from '..';
 import { addExchangeItem } from '../../exchange';
-import { getIframeById, getItemById } from '../../utils';
+import { getItemById } from '../../utils';
 
 (async () => {
   await WA.onInit();
-  document.getElementById('closeModal')?.addEventListener('click', () => {
-    close();
-  });
+  // document.getElementById('closeModal')?.addEventListener('click', async () => {
+  //   await closeInventoryAndExchangeIframes();
+  // });
 
   const inventory = document.getElementById('inventory');
 
   const items = await getPlayerInventory();
 
-  function addCard(item?: Item): void {
-    if (inventory != null) {
-      if (item === undefined) {
-        inventory.innerHTML += `<div class="card"></div>`;
+  const getCellHTML = (item?: Item): string => {
+    if (item === undefined) {
+      return `<div class="card"></div>`;
+    }
+    return `<div class="card-filled">
+              <img src="${item?.sprite_url}" alt="${item?.description}" title="${item.name}" style="width:95%">
+            </div>`;
+  };
+
+  const refreshCells = (inventory: HTMLElement | null, items: Item[] = []) => {
+    if (!inventory) {
+      throw new Error('Missing interface');
+    }
+
+    const MIN_NB_CELLS = 30;
+    const displayedNbCells = Math.max(
+      Math.ceil(items.length / 10) * 10,
+      MIN_NB_CELLS,
+    );
+
+    let cellsHTML: string = '';
+    for (let i = 0; i < displayedNbCells; i++) {
+      if (items[i] !== undefined) {
+        cellsHTML += getCellHTML(items[i]);
       } else {
-        inventory.innerHTML += `<div class="card-filled">
-            <img 
-              src="${item?.sprite_url}" 
-              alt="${item?.description}" 
-              title="${item.name}" 
-              style="width:95%"
-              onclick=""
-            >
-          </div>`;
+        cellsHTML += getCellHTML();
       }
     }
-  }
 
-  // Creation of the cards in the inventory
-  let nbCard = 30;
-  items.length > 30 ? (nbCard = Math.ceil(items.length / 10) * 10) : null;
-  for (let i = 0; i < nbCard; i++) {
-    if (items[i] !== undefined) {
-      addCard(items[i]);
-    } else {
-      addCard();
-    }
-  }
+    inventory.innerHTML = cellsHTML;
 
-  async function close() {
-    const website = await getIframeById(String(WA.player.state.inventory_id));
-    if (website) {
-      WA.player.state.inventory_open = false;
-      website.close();
+    // Add event listener to each item
+    const cards = document.getElementsByClassName('card-filled');
+    for (let i = 0; i < cards.length; i++) {
+      cards[i].addEventListener('click', () => {
+        if (items[i] !== undefined) {
+          openItemModal(items[i]);
+        }
+      });
     }
-  }
+  };
+
+  // Display initial cells in the inventory
+  refreshCells(inventory, items);
 
   // Add event listener to each item
   const cards = document.getElementsByClassName('card-filled');
@@ -73,13 +81,15 @@ import { getIframeById, getItemById } from '../../utils';
     }
   }
 
+  function closeItemModal() {
+    if (modal?.style.display === 'block') {
+      modal.style.display = 'none';
+    }
+  }
+
   document
     .getElementById('closeInteractModal')
-    ?.addEventListener('click', () => {
-      if (modal?.style.display === 'block') {
-        modal.style.display = 'none';
-      }
-    });
+    ?.addEventListener('click', closeItemModal);
 
   // Close the modal if the user presses the escape key
   window.onkeydown = function (event) {
@@ -90,15 +100,18 @@ import { getIframeById, getItemById } from '../../utils';
     }
   };
 
+  WA.player.state.onVariableChange(INVENTORY).subscribe((items: any) => {
+    refreshCells(inventory, items);
+  });
+
   document.getElementById('tradeItem')?.addEventListener('click', async (e) => {
     const itemId = (e.target as HTMLElement).dataset.item;
     const item = await getItemById(Number(itemId));
 
-    const inventoryIframe = await getIframeById(
-      String(WA.player.state.inventory_id),
-    ); // Receive the iframe of the inventory to reposition it
-
-    if (inventoryIframe && item) {
+    if (item) {
+      await removePlayerItem(item);
+      refreshCells(inventory, await getPlayerInventory());
+      closeItemModal();
       await addExchangeItem(item);
     }
   });

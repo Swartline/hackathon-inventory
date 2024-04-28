@@ -1,6 +1,11 @@
 import { UIWebsite } from '@workadventure/iframe-api-typings';
-import { Item, openInventoryLeft } from '../inventory';
-import { addItemToPlayerList, removeItemFromPlayerList } from '../utils';
+import { Item, addPlayerItem, openInventoryLeft } from '../inventory';
+import {
+  addItemToPlayerList,
+  clearPlayerList,
+  getIframeById,
+  removeItemFromPlayerList,
+} from '../utils';
 
 export const EXCHANGE_PARTNER_UUID = 'exchange_partner_uuid';
 export const EXCHANGE_LIST = 'exchange_list';
@@ -45,8 +50,38 @@ export const openExchange = async (): Promise<UIWebsite> => {
     allowApi: true,
   });
   WA.player.state.exchange_id = iframeExchange.id;
+  await openInventoryLeft();
   return iframeExchange;
 };
+
+// Return items to the player
+export const returnItemsToPlayer = async () => {
+  const localItemsForExchange = WA.player.state[EXCHANGE_LIST] as Item[];
+
+  for (const item of localItemsForExchange) {
+    await addPlayerItem(item);
+  }
+
+  await clearPlayerList(EXCHANGE_LIST);
+};
+
+export async function closeInventoryAndExchangeIframes(): Promise<void> {
+  const inventoryIframe = await getIframeById(
+    String(WA.player.state.inventory_id),
+  );
+  const exchangeIframe = await getIframeById(
+    String(WA.player.state.exchange_id),
+  );
+
+  await returnItemsToPlayer();
+
+  if (inventoryIframe) {
+    inventoryIframe.close();
+  }
+  if (exchangeIframe) {
+    exchangeIframe.close();
+  }
+}
 
 export const initializeExchangeSystem = async (): Promise<void> => {
   await WA.players.configureTracking({ players: true });
@@ -66,8 +101,6 @@ export const initializeExchangeSystem = async (): Promise<void> => {
             persist: false,
           },
         );
-
-        await openInventoryLeft();
         await openExchange();
       }
     });

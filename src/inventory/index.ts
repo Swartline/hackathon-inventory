@@ -3,13 +3,14 @@ import { UIWebsite } from '@workadventure/iframe-api-typings';
 import itemsJson from './items.json';
 import {
   addItemToPlayerList,
+  getIframeById,
   getPlayerList,
   removeItemFromPlayerList,
 } from '../utils';
 
 export { type Item };
 
-const INVENTORY: string = 'inventory';
+export const INVENTORY: string = 'inventory';
 const items: Item[] = itemsJson.items;
 
 const compareByName = (a: Item, b: Item) => {
@@ -87,10 +88,11 @@ export const openInventoryLeft = async (): Promise<UIWebsite> => {
   return inventoryIframe;
 };
 
-export const closeInventory = async (
-  inventoryIframe: UIWebsite,
-): Promise<void> => {
-  inventoryIframe.close();
+export const closeInventory = async (): Promise<void> => {
+  const inventoryIframe = await getIframeById(
+    String(WA.player.state.inventory_id),
+  );
+  inventoryIframe?.close();
   WA.player.state.inventory_open = false;
 };
 
@@ -113,7 +115,7 @@ export const initializeInventorySystem = async (): Promise<void> => {
       if (!inventoryIframe) {
         inventoryIframe = await openInventory();
       } else {
-        await closeInventory(inventoryIframe);
+        await closeInventory();
         inventoryIframe = undefined;
       }
     },

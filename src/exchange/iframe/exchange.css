@@ -4,8 +4,8 @@
   padding: 10px;
 }
 
-#btn-valid,
-#btn-cancel {
+#btn-valid-exchange,
+#btn-cancel-exchange {
   color: white;
   padding: 4px 16px;
   font-size: 16px;
@@ -17,16 +17,16 @@
   opacity: 0.9;
 }
 
-#btn-valid {
+#btn-valid-exchange {
   background-color: #4caf50;
 }
 
-#btn-cancel {
+#btn-cancel-exchange {
   background-color: gray;
 }
 
-#btn-valid:hover,
-#btn-cancel:hover {
+#btn-valid-exchange:hover,
+#bbtn-cancel-exchange:hover {
   opacity: 1;
 }
 
@@ -38,4 +38,17 @@
 .divider {
   width: 10px;
   height: 100%;
+}
+
+#overlay-confirm-trade-my-item,
+#overlay-confirm-trade-remote-item {
+  position: absolute;
+  top: 0;
+  left: 5px;
+  width: calc(100% - 10px);
+  height: 100%;
+  background-color: rgba(31, 133, 34, 0.5);
+  z-index: 100;
+  border-radius: 5px;
+  display: none;
 }
