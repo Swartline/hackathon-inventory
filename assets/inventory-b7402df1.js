@@ -1,9 +1,0 @@
-import"./style-6dee42fd.js";import{g as m}from"./index-ed88df83.js";(async()=>{var a,c,s;await WA.onInit(),(a=document.getElementById("closeModal"))==null||a.addEventListener("click",()=>{r()});const i=document.getElementById("inventory"),n=await m();function o(e){i!=null&&(e===void 0?i.innerHTML+='<div class="card"></div>':i.innerHTML+=`<div class="card-filled">
-            <img 
-              src="${e==null?void 0:e.sprite_url}" 
-              alt="${e==null?void 0:e.description}" 
-              title="${e.name}" 
-              style="width:95%"
-              onclick=""
-            >
-          </div>`)}let d=30;n.length>30&&(d=Math.ceil(n.length/10)*10);for(let e=0;e<d;e++)n[e]!==void 0?o(n[e]):o();async function r(){WA.ui.website.getById(String(WA.player.state.inventory_id)).then(e=>{e&&(WA.player.state.inventory_open=!1,e.close())})}const l=document.getElementsByClassName("card-filled");for(let e=0;e<l.length;e++)l[e].addEventListener("click",()=>{console.log("Item clicked",l[e]),n[e]!==void 0&&y(n[e])});const t=document.getElementById("itemModal");function y(e){console.log("Open item modal",e),t&&(t.style.display="block",document.getElementById("itemModalTitle").innerHTML=e.name,document.getElementById("itemModalDescription").innerHTML=e.description)}(c=document.getElementById("closeInteractModal"))==null||c.addEventListener("click",()=>{(t==null?void 0:t.style.display)==="block"&&(t.style.display="none")}),window.onkeydown=function(e){e.key==="Escape"&&t&&(t.style.display="none")},(s=document.getElementById("tradeItem"))==null||s.addEventListener("click",async()=>{console.log("Trade item");const e=await WA.ui.website.getById(String(WA.player.state.inventory_id));if(e){console.log("Trade item",e),e.position.horizontal="left";const g=await WA.ui.website.open({url:"./src/exchange/iframe/exchange.html",position:{vertical:"middle",horizontal:"right"},size:{height:"50vh",width:"50vw"},allowApi:!0});WA.player.state.exchange_id=g.id}})})();

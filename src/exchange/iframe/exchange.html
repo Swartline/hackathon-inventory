@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -9,19 +9,34 @@
     
     <script src="https://play.workadventu.re/iframe_api.js"></script>
     <style></style>
-    <script type="module" crossorigin src="../../../assets/exchange-a67a6074.js"></script>
-    <link rel="modulepreload" crossorigin href="../../../assets/style-6dee42fd.js">
-    <link rel="modulepreload" crossorigin href="../../../assets/index-ed88df83.js">
-    <link rel="stylesheet" href="../../../assets/style-cbc112ac.css">
-    <link rel="stylesheet" href="../../../assets/exchange-c84fe4c5.css">
+    <script type="module" crossorigin src="../../../assets/exchange-83561c99.js"></script>
+    <link rel="modulepreload" crossorigin href="../../../assets/style-970dcbb6.js">
+    <link rel="modulepreload" crossorigin href="../../../assets/index-3ab0f3d8.js">
+    <link rel="stylesheet" href="../../../assets/style-21ab42ca.css">
+    <link rel="stylesheet" href="../../../assets/exchange-eeed425f.css">
   </head>
   <body>
-    <h1>Echange</h1>
+    <h1>Échange</h1>
     <button type="button" id="closeModal">X</button>
-    <section id="inventory"></section>
+    <main class="main">
+      <div style="position: relative">
+        <div id="overlay-confirm-trade-my-item"></div>
+        <section id="exchange-cells"></section>
+      </div>
+      <div id="itemModal">
+        <button type="button" id="closeInteractModal">X</button>
+        <div class="buttons-container">
+          <button type="button" id="btn-cancel-item">Retirer</button>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div style="position: relative">
+        <div id="overlay-confirm-trade-remote-item"></div>
+        <section id="remote-exchange-cells"></section>
+      </div>
+    </main>
     <div class="buttons-container">
-      <button type="button" id="btn-cancel">Annuler</button>
-      <button type="button" id="btn-valid">Valider</button>
+      <button type="button" id="btn-valid-exchange">Valider</button>
     </div>
     
   </body>
