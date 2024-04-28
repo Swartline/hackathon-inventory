@@ -18,7 +18,6 @@ import {
   const overlayForMyItems = document.getElementById(
     'overlay-confirm-trade-my-item',
   );
-  console.log('overlayForMyItems', overlayForMyItems);
 
   const overlayForRemoteItems = document.getElementById(
     'overlay-confirm-trade-remote-item',
@@ -183,9 +182,7 @@ import {
         await addPlayerItem(item);
       }
 
-      console.log('exchange items confirmed !');
       await clearPlayerList(EXCHANGE_LIST);
-
       await closeInventoryAndExchangeIframes();
     }
   };

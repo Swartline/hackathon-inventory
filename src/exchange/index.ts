@@ -27,7 +27,6 @@ const addExchangeButton = (): void => {
 
 export const addExchangeItem = async (item: Item): Promise<Item[]> => {
   const proposedItems = await addItemToPlayerList(item, EXCHANGE_LIST);
-  console.log(proposedItems);
   return proposedItems;
 };
 
