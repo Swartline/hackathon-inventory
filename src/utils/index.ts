@@ -1,4 +1,7 @@
+import { UIWebsite } from '@workadventure/iframe-api-typings';
 import { Item } from '../inventory';
+import { RemotePlayerInterface } from '@workadventure/iframe-api-typings/play/src/front/Api/Iframe/Players/RemotePlayer';
+import { EXCHANGE_LIST } from '../exchange';
 
 // Utilitary functions to handle adding and removing items in lists
 export const getPlayerList = async (
@@ -11,7 +14,7 @@ export const getPlayerList = async (
 export const clearPlayerList = async (
   listVariableName: string,
 ): Promise<void> => {
-  await WA.player.state.saveVariable(listVariableName, []);
+  await WA.player.state.saveVariable(listVariableName, [], { public: true });
 };
 
 export const addItemToPlayerList = async (
@@ -20,7 +23,7 @@ export const addItemToPlayerList = async (
 ): Promise<Item[]> => {
   const list = await getPlayerList(listVariableName);
   list.push(item);
-  await WA.player.state.saveVariable(listVariableName, list);
+  await WA.player.state.saveVariable(listVariableName, list, { public: true });
   return list;
 };
 
@@ -36,7 +39,43 @@ export const removeItemFromPlayerList = async (
     }
   });
 
-  await WA.player.state.saveVariable(listVariableName, list);
+  await WA.player.state.saveVariable(listVariableName, list, { public: true });
 
   return list;
+};
+
+export const clearItemsFromPlayerList = async (
+  listVariableName: string,
+): Promise<void> => {
+  await WA.player.state.saveVariable(listVariableName, []);
+};
+
+export async function getItemByIdFromPlayerList(
+  id: number,
+): Promise<Item | undefined> {
+  return (await getPlayerList(EXCHANGE_LIST)).find((item) => item.id === id);
+}
+
+export async function getItemById(id: number): Promise<Item | undefined> {
+  return (await getPlayerList('inventory')).find((item) => item.id === id);
+}
+
+export async function getIframeById(
+  id: string,
+): Promise<UIWebsite | undefined> {
+  return WA.ui.website.getById(id);
+}
+
+export const getRemotePlayerByUuid = async (
+  uuid: string,
+): Promise<RemotePlayerInterface | null> => {
+  await WA.players.configureTracking({ players: true });
+  const allPlayers = WA.players.list();
+
+  for (const player of allPlayers) {
+    if (player.uuid === uuid) {
+      return player;
+    }
+  }
+  return null;
 };

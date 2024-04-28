@@ -3,13 +3,14 @@ import { UIWebsite } from '@workadventure/iframe-api-typings';
 import itemsJson from './items.json';
 import {
   addItemToPlayerList,
+  getIframeById,
   getPlayerList,
   removeItemFromPlayerList,
 } from '../utils';
 
 export { type Item };
 
-const INVENTORY: string = 'inventory';
+export const INVENTORY: string = 'inventory';
 const items: Item[] = itemsJson.items;
 
 const compareByName = (a: Item, b: Item) => {
@@ -47,6 +48,54 @@ export const removePlayerItem = async (item: Item): Promise<Item[]> => {
   return newInventory;
 };
 
+export const openInventory = async (): Promise<UIWebsite> => {
+  const inventoryIframe = await WA.ui.website.open({
+    url: './src/inventory/iframe/inventory.html',
+    position: {
+      vertical: 'middle',
+      horizontal: 'middle',
+    },
+    size: {
+      height: '50vh',
+      width: '50vw',
+    },
+    allowApi: true,
+  });
+
+  WA.player.state.inventory_open = true;
+  WA.player.state.inventory_id = inventoryIframe.id;
+
+  return inventoryIframe;
+};
+
+export const openInventoryLeft = async (): Promise<UIWebsite> => {
+  const inventoryIframe = await WA.ui.website.open({
+    url: './src/inventory/iframe/inventory.html',
+    position: {
+      vertical: 'middle',
+      horizontal: 'left',
+    },
+    size: {
+      height: '50vh',
+      width: '50vw',
+    },
+    allowApi: true,
+  });
+
+  WA.player.state.inventory_open = true;
+  WA.player.state.inventory_id = inventoryIframe.id;
+
+  return inventoryIframe;
+};
+
+export const closeInventory = async (): Promise<void> => {
+  const inventoryIframe = await getIframeById(
+    String(WA.player.state.inventory_id),
+  );
+  inventoryIframe?.close();
+  WA.player.state.inventory_open = false;
+};
+
 export const initializeInventorySystem = async (): Promise<void> => {
   await clearPlayerInventory();
 
@@ -64,26 +113,10 @@ export const initializeInventorySystem = async (): Promise<void> => {
     toolTip: 'Inventaire',
     callback: async () => {
       if (!inventoryIframe) {
-        inventoryIframe = await WA.ui.website.open({
-          url: '/src/inventory/iframe/inventory.html',
-          position: {
-            vertical: 'middle',
-            horizontal: 'middle',
-          },
-          size: {
-            height: '50vh',
-            width: '50vw',
-          },
-          allowApi: true,
-        });
-        inventoryIframe.position.vertical = 'top';
-
-        WA.player.state.inventory_open = true;
-        WA.player.state.inventory_id = inventoryIframe.id;
+        inventoryIframe = await openInventory();
       } else {
-        inventoryIframe.close();
+        await closeInventory();
         inventoryIframe = undefined;
-        WA.player.state.inventory_open = false;
       }
     },
   });

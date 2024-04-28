@@ -1,12 +1,4 @@
 { "compressionlevel":-1,
- "editorsettings":
-    {
-     "export":
-        {
-         "format":"json",
-         "target":"MAP\/map..tmj"
-        }
-    },
  "height":21,
  "infinite":false,
  "layers":[
@@ -133,7 +125,7 @@
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                  "height":21,
                  "id":75,
-                 "name":"inner floor",
+                 "name":"inner_floor",
                  "opacity":1,
                  "type":"tilelayer",
                  "visible":true,
@@ -271,7 +263,7 @@
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                  "height":21,
                  "id":73,
-                 "name":"external walls",
+                 "name":"external_walls",
                  "opacity":1,
                  "type":"tilelayer",
                  "visible":true,
@@ -303,7 +295,7 @@
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                  "height":21,
                  "id":76,
-                 "name":"inner walls",
+                 "name":"inner_walls",
                  "opacity":1,
                  "type":"tilelayer",
                  "visible":true,
@@ -600,18 +592,13 @@
                 {
                  "draworder":"topdown",
                  "id":95,
-                 "name":"exchange items area",
+                 "name":"exchange_items_area",
                  "objects":[
                         {
                          "height":224,
                          "id":46,
-                         "name":"exchange items area",
+                         "name":"exchange_items_area",
                          "properties":[
-                                {
-                                 "name":"exchange items area",
-                                 "type":"string",
-                                 "value":"Espace privil\u00e9gi\u00e9 pour vos \u00e9changes des bonus."
-                                }, 
                                 {
                                  "name":"focusable",
                                  "type":"bool",
@@ -640,11 +627,6 @@
                          "id":27,
                          "name":"classification",
                          "properties":[
-                                {
-                                 "name":"classification",
-                                 "type":"string",
-                                 "value":""
-                                }, 
                                 {
                                  "name":"focusable",
                                  "type":"bool",
@@ -1143,8 +1125,8 @@
                  "properties":[
                         {
                          "name":"collides",
-                         "type":"",
-                         "value":null
+                         "type":"bool",
+                         "value":true
                         }]
                 }, 
                 {
@@ -1188,8 +1170,8 @@
                  "properties":[
                         {
                          "name":"collides",
-                         "type":"",
-                         "value":null
+                         "type":"bool",
+                         "value":true
                         }]
                 }],
          "tilewidth":32

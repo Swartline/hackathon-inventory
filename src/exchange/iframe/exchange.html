@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mon Inventaire</title>
+    <link rel="stylesheet" href="../../inventory/iframe/style.css" />
+    <link rel="stylesheet" href="exchange.css" />
+    <script src="https://play.workadventu.re/iframe_api.js"></script>
+    <style></style>
+  </head>
+  <body>
+    <h1>Échange</h1>
+    <button type="button" id="closeModal">X</button>
+    <main class="main">
+      <div style="position: relative">
+        <div id="overlay-confirm-trade-my-item"></div>
+        <section id="exchange-cells"></section>
+      </div>
+      <div id="itemModal">
+        <button type="button" id="closeInteractModal">X</button>
+        <h4>Souhaitez-vous annuler votre l'échange pour cette item ?</h4>
+        <div class="buttons-container">
+          <button type="button" id="btn-cancel-item">Annuler</button>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div style="position: relative">
+        <div id="overlay-confirm-trade-remote-item"></div>
+        <section id="remote-exchange-cells"></section>
+      </div>
+    </main>
+    <div class="buttons-container">
+      <button type="button" id="btn-cancel-exchange">Annuler</button>
+      <button type="button" id="btn-valid-exchange">Valider</button>
+    </div>
+    <script type="module" src="exchange.ts"></script>
+  </body>
+</html>
